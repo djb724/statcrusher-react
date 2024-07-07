@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "StatCrusher",
-  description: "VGC Showdown stats",
+  description: "VGC Showdown stats visualization",
 };
 
 export default function RootLayout({
