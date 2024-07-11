@@ -23,6 +23,41 @@
   border-right: #666666 1px solid;
 }
 
+.selector {
+  height: 22px;
+  font-size: 16px;
+  line-height: 18px;
+  padding-inline: 9px;
+  padding-block: 0px;
+  border-radius: 9px;
+  border: 2px solid var(--hilight);
+  margin: 8px 4px;
+  background-color: var(--bg-dark-2);
+  color: var(--fg-dark);
+  cursor: pointer;
+}
+
+.flexRow {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.selector:hover {
+  background-color: var(--hilight);
+  color: white;
+}
+
+.selectorRow {
+  text-align: center
+}
+
+.selected {
+  background-color: white;
+  border-color: var(--hilight);
+  color: var(--hilight);
+}
+
 .pokemonListItem {
   height: 70px;
   width: 100%;
@@ -36,6 +71,7 @@
   flex-basis: 32px;
   margin-left: 10px;
   text-align: right;
+  color: var(--fg-dark-2);
 }
 
 .menuSprite {
@@ -44,10 +80,14 @@
 
 .pokemonName {
   flex-grow: 1;
+  overflow-x: hidden;
+  text-overflow: elipsis;
 }
 
 .usageRate {
   flex-basis: 65px;
+  color: var(--fg-dark-2);
+  margin-right: 3px;
 }
 
 
