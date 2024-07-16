@@ -1,37 +1,42 @@
 import axios from 'axios';
-import {usageData, pokemonData} from './types'
+import { PathParams } from './types';
+import {UsageData, PokemonData} from './types'
 
 type ApiResponse = {
   status: number,
-  response: any
+  statusText: string,
+  data: any
 }
 
-const url = 'https://b8wasaivpe.execute-api.us-east-2.amazonaws.com/beta';
+// const url = 'https://b8wasaivpe.execute-api.us-east-2.amazonaws.com/beta';
+const url = 'http://localhost:3002'
 
-export async function getPokemonData(elo: number, species: string): Promise<pokemonData[]> {
+export async function getPokemonData(params: PathParams, species: string): Promise<PokemonData[]> {
 
-  let path = `/${elo}/stats/${species}`;
+  let {elo, format, month} = params;
+  let path = `/stats/${month}/${format}/${elo}/${species}`;
+  console.log(url + path);
   return axios.get(url + path)
   .then((res) => {
     if (res.status !== 200) {
       return Promise.reject(res.statusText)
     }
-    return res.data as ApiResponse;
+    return res as ApiResponse;
   })
-  // .then(res => {console.log(res); return res})
-  .then((res: ApiResponse) => {return res.response as pokemonData[]})
+  .then((res: ApiResponse) => {return res.data as PokemonData[]})
 }
 
-export async function getUsageData(elo: number): Promise<usageData[]> {
+export async function getUsageData(params: PathParams): Promise<UsageData[]> {
 
-  let path = `/${elo}/usage`;
+  let {elo, format, month} = params;
+  let path = `/usage/${month}/${format}/${elo}`;
+  console.log(url + path);
   return axios.get(url + path)
   .then((res) => {
     if (res.status !== 200) {
       return Promise.reject(res.statusText)
     }
-    return res.data as ApiResponse;
+    return res as ApiResponse;
   })
-  // .then(res => {console.log(res); return res})
-  .then(res => {return res.response as usageData[]})
+  .then(res => {return res.data as UsageData[]})
 }

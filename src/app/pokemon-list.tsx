@@ -1,4 +1,4 @@
-import {usageData} from './types';
+import {RestrictedFilter, UsageData, Status} from './types';
 import Image from 'next/image';
 import style from './page.module.css'
 
@@ -6,9 +6,16 @@ function percent(n: number): string {
   return (n * 100).toFixed(2) + '%';
 }
 
-function PokemonListItem(data: usageData) {
+function PokemonListItem({ data, selected, onSelect }: {
+  data: UsageData, selected: boolean, onSelect: () => void
+}): JSX.Element {
 
-  return (<div className={style.pokemonListItem}>
+  let className = style.pokemonListItem + ' ';
+  className += selected ? style.pokemonListItemSelected : '';
+
+  return (<div  
+      className={className}
+      onClick={onSelect}>
     <div className={style.rank}>{data.rank}</div>
     <Image 
       className={style.menuSprite}
@@ -19,10 +26,29 @@ function PokemonListItem(data: usageData) {
   </div>)
 }
 
-export default function PokemonList({data}: 
-    {data: usageData[]}) {
-  
-  let elementList = data.map(ud => PokemonListItem(ud));
-  return <div>{elementList}</div>
+export default function PokemonList({ data, status, restrictedFilter, selectedPokemon, onSelectedPokemonChange }: {
+  data: UsageData[],
+  status: Status,
+  restrictedFilter: RestrictedFilter
+  selectedPokemon?: string,
+  onSelectedPokemonChange: Function
+}) {
+  if (status === Status.inProgress) return <div>loading...</div>
+  if (status === Status.error) return <div>error</div>
+  console.log(selectedPokemon);
+
+  if (restrictedFilter === RestrictedFilter.restricted) {
+    data = data.filter(p => p.isRestricted);
+  }
+  else if (restrictedFilter === RestrictedFilter.nonrestricted) {
+    data = data.filter(p => !p.isRestricted);
+  }
+  let elementList = data.map(ud => {
+    let s = selectedPokemon === ud.name;
+    return <PokemonListItem key={`li${ud.name}`} data={ud} selected={s} onSelect={() => onSelectedPokemonChange(ud.name)} />
+  });
+  return <div>
+    {elementList}
+  </div>
 }
 
