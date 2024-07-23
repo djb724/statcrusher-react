@@ -1,13 +1,448 @@
-import { PokemonData, Status } from "./types"
+import { PokemonData, StatsFrequencies, Status, ValueFrequency } from "./types"
+import { conc, percent } from "./util";
+import styles from "./pokemon-info.module.css";
+import { useState } from "react";
+import { Chart, ChartData, registerables, TooltipItem } from "chart.js";
+import { Bar } from "react-chartjs-2";
+import Image from "next/image";
+
+Chart.register(...registerables);
+
+const chartOptions = {
+  legend: false,
+  responsive: true,
+  scales: {
+    y: {
+      type: 'linear',
+      ticks: {
+        callback: function (value: string | number) {
+          return (+value * 100).toFixed(0) + '%';
+        }
+      }
+    },
+    x: {
+      title: {
+        dispaly: true,
+        text: 'Stat Value'
+      }
+    }
+  },
+  plugins: {
+    legend: false,
+    tooltip: {
+      titleAlign: 'center',
+      displayColors: false,
+      titleColor: '#911', // change for others
+      callbacks: {
+        title: (tooltipItem: TooltipItem<'bar'>[]) => {
+          return '= ' + tooltipItem[0].label
+        },
+        label: (tooltipItem: TooltipItem<'bar'>) => {
+          let value = +(tooltipItem.formattedValue || 0)
+          return percent(value)
+        }
+      }
+    }
+  }
+}
+const chartOptionsAsc = {
+  legend: false,
+  responsive: true,
+  scales: {
+    y: {
+      type: 'linear',
+      ticks: {
+        callback: function (value: string | number) {
+          return (+value * 100).toFixed(0) + '%';
+        }
+      }
+    },
+    x: {
+      title: {
+        dispaly: true,
+        text: 'Stat Value'
+      }
+    }
+  },
+  plugins: {
+    legend: false,
+    tooltip: {
+      titleAlign: 'center',
+      displayColors: false,
+      titleColor: '#181',
+      callbacks: {
+        title: (tooltipItem: TooltipItem<'bar'>[]) => {
+          return '\u2264 ' + tooltipItem[0].label
+        },
+        label: (tooltipItem: TooltipItem<'bar'>) => {
+          let value = +(tooltipItem.formattedValue || 0)
+          return percent(value)
+        }
+      }
+    }
+  }
+}
+const chartOptionsDesc = {
+  legend: false,
+  responsive: true,
+  scales: {
+    y: {
+      type: 'linear',
+      ticks: {
+        callback: function (value: string | number) {
+          return (+value * 100).toFixed(0) + '%';
+        }
+      }
+    },
+    x: {
+      title: {
+        dispaly: true,
+        text: 'Stat Value'
+      }
+    }
+  },
+  plugins: {
+    legend: false,
+    tooltip: {
+      titleAlign: 'center',
+      displayColors: false,
+      titleColor: '#159',
+      callbacks: {
+        title: (tooltipItem: TooltipItem<'bar'>[]) => {
+          return '\u2265 ' + tooltipItem[0].label
+        },
+        label: (tooltipItem: TooltipItem<'bar'>) => {
+          let value = +(tooltipItem.formattedValue || 0)
+          return percent(value)
+        }
+      }
+    }
+  }
+}
+
+function Types({ types }: { types: string[] }) {
+  return <div className={styles.types}>{types.join(' / ')}</div>
+}
+
+function Histogram({ stat, datasetType, data }: {
+  stat: string,
+  datasetType: number,
+  data: ValueFrequency[]
+}) {
+
+  let datasetOptions = {}
+  let options = chartOptions;
+  switch (datasetType) {
+    case 0:
+      datasetOptions = {
+        label: 'Frequency',
+        backgroundColor: '#911',
+        hoverBackgroundColor: '#711'
+      }
+      options = chartOptions;
+      break;
+    case 1:
+      datasetOptions = {
+        label: 'Cumulative Frequency',
+        backgroundColor: '#181',
+        hoverBackgroundColor: '#161'
+      }
+      options = chartOptionsAsc;
+      break;
+    case 2:
+      datasetOptions = {
+        label: 'Cumulative Descending Frequency',
+        backgroundColor: '#159',
+        hoverBackgroundColor: '#147'
+      }
+      options = chartOptionsDesc;
+      break;
+  }
+
+  const chartData = {
+    labels: data.map(a => a.value),
+    datasets: [{
+      data: data.map(a => a.usage),
+      ...datasetOptions
+    }]
+  };
 
 
+  return <Bar data={chartData} options={options as any} />
+}
 
-export function InfoDisplayContainer({pokemonData, status}: {
+function InfoHeader({ pokemonData }: { pokemonData: PokemonData }) {
+  
+  let imageName = `${pokemonData.dexNum.toString().padStart(4, '0')} ${pokemonData.name}`
+  return <div className={conc(styles.boxSection, styles.header)}>
+    <div className={styles.omgAnotherContainer}>
+      <div className={styles.headerImageContainer}>
+        <Image
+          className={styles.headerImage}
+          src={`/official-art/${imageName}.png`}
+          alt={''}
+          width={175}
+          height={175}
+        />
+      </div>
+    </div>
+    <div>
+      <h3>{pokemonData.name}</h3>
+      <Types types={pokemonData.type} />
+      <table className={styles.headerTable}>
+        <tr>
+          <td>Usage:</td>
+          <td>{percent(pokemonData.usageRate)}</td>
+        </tr>
+        <tr>
+          <td>Raw Count:</td>
+          <td>{pokemonData.rawCount}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+}
+
+function truncateData(data: ValueFrequency[], limit: number): ValueFrequency[] {
+  if (data.length < limit) return data;
+
+  let ret: ValueFrequency[] = data.slice(0, limit);
+  ret.push({
+    value: "Other",
+    usage: data.slice(10).reduce((sum, vf) => sum + vf.usage, 0)
+  })
+  return ret;
+}
+
+function AbilitiesTable({ data }: {
+  data: ValueFrequency[]
+}) {
+  data = truncateData(data, 10);
+  let rows = data.map(row => {
+    return (<tr key={row.value} className={styles.tableRow}>
+      <td>{row.value}</td>
+      <td>{percent(row.usage)}</td>
+    </tr>)
+  })
+  return <table cellPadding={0} cellSpacing={0} className={styles.table}>
+    {rows}
+  </table>
+}
+
+function ItemsTable({ data }: {
+  data: ValueFrequency[]
+}) {
+  data = truncateData(data, 10);
+  let rows = data.map(row => {
+    return (<tr key={row.value} className={styles.tableRow}>
+      <td>{row.value}</td>
+      <td>{percent(row.usage)}</td>
+    </tr>)
+  })
+  return <table cellSpacing={0} cellPadding={0} className={styles.table}>
+    {rows}
+  </table>
+}
+
+function MovesTable({ data }: {
+  data: ValueFrequency[]
+}) {
+  data = truncateData(data, 12);
+  let rows = data.map(row => {
+    return (<tr key={row.value} className={styles.tableRow}>
+      <td>{row.value}</td>
+      <td>{percent(row.usage)}</td>
+    </tr>)
+  })
+  return <table cellSpacing={0} cellPadding={0} className={styles.table}>
+    {rows}
+  </table>
+}
+
+function TeammatesTable({ data }: {
+  data: ValueFrequency[]
+}) {
+  data = truncateData(data, 50);
+  let rows = data.map(row => {
+    return <tr key={row.value} className={styles.tableRow}>
+      <td>{row.value}</td>
+      <td>{percent(row.usage)}</td>
+    </tr>
+  })
+  return <div className={styles.teammatesTableContainer}>
+    <table cellSpacing={0} cellPadding={0} className={conc(styles.table)}>
+      {rows}
+    </table>
+  </div>
+}
+
+function NaturesTable({ data }: {
+  data: ValueFrequency[]
+}) {
+  data = truncateData(data, 8);
+  let rows = data.map(row => {
+    return (<tr key={row.value} className={styles.tableRow}>
+      <td className={styles.tableRowSubj}>{row.value}</td>
+      <td className={styles.tableRowValue}>{percent(row.usage)}</td>
+    </tr>)
+  })
+  return <table cellSpacing={0} cellPadding={0} className={styles.table}>
+    {rows}
+  </table>
+}
+
+function StatsTabs({ selected, onSelectedChange }: {
+  selected: number,
+  onSelectedChange: Function
+}) {
+  return <div className={styles.tabsContainer}>
+    <div
+      className={conc(styles.tab, styles.tabFreq, (selected === 0) ? styles.selected : '')}
+      onClick={() => onSelectedChange(0)}
+      title={'Frequency'}
+    >
+      <svg viewBox="0 0 20 20" className={styles.tabIcon}>
+        <rect x="0" y="14" height="6" width="6"></rect>
+        <rect x="7" y="0" height="20" width="6"></rect>
+        <rect x="14" y="6" height="14" width="6"></rect>
+      </svg>
+    </div>
+    <div
+      className={conc(styles.tab, styles.tabAsc, (selected === 1) ? styles.selected : '')}
+      onClick={() => onSelectedChange(1)}
+      title={'Cumulative Frequency'}
+    >
+      <svg viewBox="0 0 20 20" className={styles.tabIcon}>
+        <rect x="0" y="14" height="6" width="6"></rect>
+        <rect x="7" y="8" height="12" width="6"></rect>
+        <rect x="14" y="0" height="20" width="6"></rect>
+      </svg>
+    </div>
+    <div
+      className={conc(styles.tab, styles.tabDesc, (selected === 2) ? styles.selected : '')}
+      onClick={() => onSelectedChange(2)}
+      title={'Cumulative Descending'}
+    >
+      <svg viewBox="0 0 20 20" className={styles.tabIcon}>
+        <rect x="0" y="0" height="20" width="6"></rect>
+        <rect x="7" y="8" height="12" width="6"></rect>
+        <rect x="14" y="14" height="6" width="6"></rect>
+      </svg>
+    </div>
+  </div>
+}
+
+function StatsTable({ stats }: {
+  stats: StatsFrequencies
+}) {
+  let [selected, setSelected] = useState(0);
+
+  return <div>
+    <table className={styles.statsTendenciesTable} cellSpacing={0}>
+      <tr>
+        <td width={'50%'}>Median:</td>
+        <td width={'50%'}>{stats.quartile2}</td>
+      </tr>
+      <tr>
+        <td width={'50%'}>Interquartile Range:</td>
+        <td width={'50%'}>{stats.quartile1} - {stats.quartile3}</td>
+      </tr>
+      <tr>
+        <td width={'50%'}>Mean:</td>
+        <td width={'50%'}>{stats.mean.toFixed(2)}</td>
+      </tr>
+    </table>
+    <StatsTabs selected={selected} onSelectedChange={setSelected} />
+    {selected === 0 && <Histogram stat={'speed'} datasetType={0} data={stats.frequency} />}
+    {selected === 1 && <Histogram stat={'speed'} datasetType={1} data={stats.cumulativeFreq} />}
+    {selected === 2 && <Histogram stat={'speed'} datasetType={2} data={stats.cumulativeDesc} />}
+
+  </div>
+}
+
+function ExpandableContent({ expanded, children }: {
+  expanded: boolean,
+  children: any
+}) {
+  return <div className={expanded ? styles.expanded : styles.retracted}>
+    {children}
+  </div>
+}
+
+function Expandable({ expanded = true, title, children }: {
+  expanded: boolean,
+  title: string,
+  children: any
+}) {
+  let [_expanded, setExpanded] = useState(expanded);
+  return <div className={conc(styles.boxSection, _expanded ? styles.expanded : styles.retracted)}>
+    <div
+      className={styles.expandableHeader}
+      onClick={() => { setExpanded(!_expanded) }}
+    >
+      <h4 className={styles.expandableTitle}>{title}</h4>
+      <div className={styles.expandIcon}>{_expanded ? "-" : "+"}</div>
+    </div>
+    <ExpandableContent expanded={_expanded}>
+      {children}
+    </ExpandableContent>
+  </div>
+}
+
+export function InfoDisplayContainer({ pokemonData, status }: {
   pokemonData?: PokemonData,
   status: Status
 }) {
   if (status === Status.inProgress) return <div>loading...</div>
-  if (status === Status.error) return <div>An error occured</div>
+  if (status === Status.error || !pokemonData) return <div>An error occured</div>
 
-  return <div>{pokemonData?.dexNum}</div>
+  return <div>
+    <InfoHeader pokemonData={pokemonData} />
+
+    <div className={styles.infoContent}>
+      <div className={styles.contentSection1}>
+        <Expandable title={`Speed (${pokemonData.baseStats.spd})`} expanded={true}>
+          <StatsTable stats={pokemonData.stats.spd} />
+          <div className={styles.footnote}>
+            * 0 IVs is assumed when instances have 0 EVs and a hindering nature.
+          </div>
+        </Expandable>
+        <Expandable title={`HP (${pokemonData.baseStats.hp})`} expanded={false}>
+          <StatsTable stats={pokemonData.stats.hp} />
+        </Expandable>
+        <Expandable title={`Attack (${pokemonData.baseStats.atk})`} expanded={false}>
+          <StatsTable stats={pokemonData.stats.atk} />
+          <div className={styles.footnote}>
+            * 0 IVs is assumed when instances have 0 EVs and a hindering nature.
+          </div>
+        </Expandable>
+        <Expandable title={`Defense (${pokemonData.baseStats.def})`} expanded={false}>
+          <StatsTable stats={pokemonData.stats.def} />
+        </Expandable>
+        <Expandable title={`Special Attack (${pokemonData.baseStats.satk})`} expanded={false}>
+          <StatsTable stats={pokemonData.stats.satk} />
+        </Expandable>
+        <Expandable title={`Special Defense (${pokemonData.baseStats.sdef})`} expanded={false}>
+          <StatsTable stats={pokemonData.stats.sdef} />
+        </Expandable>
+      </div>
+      <div className={styles.contentSection2}>
+        <Expandable title={"Abilities"} expanded={true}>
+          <AbilitiesTable data={pokemonData.abilities} />
+        </Expandable>
+        <Expandable title={"Items"} expanded={true}>
+          <ItemsTable data={pokemonData.items} />
+        </Expandable>
+        <Expandable title={"Moves"} expanded={true}>
+          <MovesTable data={pokemonData.moves} />
+        </Expandable>
+        <Expandable title={"Teammates"} expanded={false}>
+          <TeammatesTable data={pokemonData.teammates} />
+        </Expandable>
+        <Expandable title={"Natures"} expanded={false}>
+          <NaturesTable data={pokemonData.natures} />
+        </Expandable>
+      </div>
+    </div>
+  </div>
 }

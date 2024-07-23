@@ -1,0 +1,191 @@
+
+.boxSection {
+  border: var(--line-dark) 1px solid;
+  margin: 15px;
+  overflow-y: hidden;
+}
+
+.header {
+  margin-top: 20px;
+  width: auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  position: relative;
+  height: 110px;
+  overflow-y: visible;
+}
+
+.omgAnotherContainer {
+  height: 150px;
+  width: 175px;
+  position: relative;
+}
+
+.headerImageContainer {
+  overflow-y: hidden;
+  height: 150px;
+  width: 175px;
+  position: absolute;
+  top: -42px;
+}
+
+.headerTable {
+  margin: 5px;
+}
+
+.headerTable td {
+  padding: 3px;
+}
+
+.types {
+  color: var(--fg-dark-2);
+  font-style: italic;
+}
+
+.infoContent {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+.contentSection1 {
+  min-width: 400px;
+  flex: 2;
+}
+
+.contentSection2 {
+  min-width: 300px;
+  flex: 1;
+}
+
+.expandableHeader {
+  display: flex;
+  flex-direction: row;
+  cursor: pointer;
+  padding: 5px;
+}
+
+.expandableTitle {
+  flex-grow: 1;
+  line-height: 20px;
+}
+
+.expanded {
+  height: auto;
+}
+
+.retracted {
+  height: 31.6px;
+}
+
+.table {
+  width: calc(100% - 20px);
+  margin: 10px;
+  font-size: 14px;
+  /* background-color: #111111; */
+}
+
+.tableRow td {
+  padding: 3px;
+}
+
+.tableRowSubj {
+  padding: 3px;
+  width: auto;
+}
+
+.tableRow:hover {
+  background-color: var(--bg-dark-2);
+}
+
+.teammatesTableContainer {
+  max-height: 228px;
+  overflow-y: auto;
+}
+
+.statsTendenciesTable {
+  margin: 10px;
+  width: calc(100% - 20px);
+  /* margin-inline: auto; */
+}
+
+.statsTendenciesTable tr:hover {
+  background-color: var(--bg-dark-2);
+}
+
+.statsTendenciesTable td {
+  padding: 3px 8px;
+}
+
+.statsTendenciesTable td:first-child {
+  text-align: right;
+}
+
+.tabsContainer {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.tab {
+  border: 1px solid var(--line-dark);
+  border-bottom: none;
+  /* width: 40px; */
+  height: 40px;
+  border-radius: 5px 5px 0px 0px;
+  cursor: pointer;
+  flex-grow: 1;
+  margin-inline: 5px;
+  color: var(--fg-dark);
+  fill: var(--fg-dark);
+  text-align: center;
+}
+
+.tabIcon {
+  height: 30px;
+  width: 30px;
+  margin: 5px;
+}
+
+.tabFreq.selected {
+  background-color: var(--red1);
+}
+
+.tabAsc.selected {
+  background-color: var(--green1);
+}
+
+.tabDesc.selected {
+  background-color: var(--blue1);
+}
+
+.tabFreq:hover {
+  background-color: var(--red2);
+}
+
+.tabAsc:hover {
+  background-color: var(--green2);
+}
+
+.tabDesc:hover {
+  background-color: var(--blue2);
+}
+
+.histCanvas {
+  width: auto;
+  height: auto;
+}
+
+.footnote {
+  font-size: 12px;
+  color: var(--fg-dark-2);
+  font-style: italic;
+  margin: 5px;
+}
+
+

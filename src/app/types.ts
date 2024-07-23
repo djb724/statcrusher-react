@@ -25,16 +25,25 @@ export type ValueFrequency = {
 }
 
 export type StatsFrequencies = {
+  mean: number,
+  quartile1: number,
+  quartile2: number,
+  quartile3: number,
   frequency: ValueFrequency[],
   cumulativeFreq: ValueFrequency[],
   cumulativeDesc: ValueFrequency[]
 }
 
 export type PokemonData = {
+  name: string,
+  usageRate: number,
+  rank: number,
+  rawCount: number,
+  isRestricted: boolean,
+  dexNum: number,
   abilities: ValueFrequency[],
   natures: ValueFrequency[],
   teammates: ValueFrequency[],
-  dexNum: number,
   stats: {
     hp: StatsFrequencies,
     atk: StatsFrequencies,

@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  grid-template-columns: 350px auto 300px;
+  grid-template-columns: 350px auto 200px;
   grid-template-rows: 30px auto;
   height: 100vh;
   width: 100vw;
@@ -11,7 +11,7 @@
   grid-column-end: 4;
   grid-row-start: 1;
   grid-row-end: 1;
-  border-bottom: #666666 1px solid;
+  border-bottom: var(--line-dark) 1px solid;
 }
 
 .sideDisplayContainer {
@@ -20,7 +20,7 @@
   grid-column-start: 1;
   grid-column-end: 2;
   overflow-y: auto;
-  border-right: #666666 1px solid;
+  border-right: var(--line-dark) 1px solid;
 }
 
 .selector {
@@ -61,7 +61,7 @@
 .pokemonListItem {
   height: 70px;
   width: 100%;
-  border-bottom: 1px solid #666666;
+  border-bottom: 1px solid var(--line-dark);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -100,7 +100,12 @@
   margin-right: 3px;
 }
 
-
+.contentPanel {
+  grid-column-start: 2;
+  grid-column-end: 4;
+  grid-row: 2;
+  overflow-y: auto;
+}
 
 /* Mobile */
 @media (max-width: 700px) {

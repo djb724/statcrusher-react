@@ -4,6 +4,13 @@
   --fg-dark: #ffffff;
   --fg-dark-2: #999999;
   --hilight: #ff0000;
+  --line-dark: #555555;
+  --red1: #911;
+  --red2: #711;
+  --green1: #181;
+  --green2: #161;
+  --blue1: #159;
+  --blue2: #147;
 }
 
 * {
@@ -26,6 +33,10 @@ body {
 a {
   color: inherit;
   text-decoration: none;
+}
+
+table {
+  border: none;
 }
 
 @media (prefers-color-scheme: light) {

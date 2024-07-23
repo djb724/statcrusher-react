@@ -1,10 +1,7 @@
 import {RestrictedFilter, UsageData, Status} from './types';
 import Image from 'next/image';
 import style from './page.module.css'
-
-function percent(n: number): string {
-  return (n * 100).toFixed(2) + '%';
-}
+import { percent } from "./util";
 
 function PokemonListItem({ data, selected, onSelect }: {
   data: UsageData, selected: boolean, onSelect: () => void
@@ -20,7 +17,7 @@ function PokemonListItem({ data, selected, onSelect }: {
     <Image 
       className={style.menuSprite}
       src={'/menu-sprites/0025.png'} 
-      alt='pkmn' width={64} height={64} />
+      alt='' width={64} height={64} />
     <div className={style.pokemonName}>{data.name}</div>
     <div className={style.usageRate}>{percent(data.usageRate)}</div>
   </div>)
@@ -35,7 +32,6 @@ export default function PokemonList({ data, status, restrictedFilter, selectedPo
 }) {
   if (status === Status.inProgress) return <div>loading...</div>
   if (status === Status.error) return <div>error</div>
-  console.log(selectedPokemon);
 
   if (restrictedFilter === RestrictedFilter.restricted) {
     data = data.filter(p => p.isRestricted);
