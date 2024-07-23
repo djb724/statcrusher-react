@@ -175,10 +175,9 @@ function InfoHeader({ pokemonData }: { pokemonData: PokemonData }) {
   
   let imageName = `${pokemonData.dexNum.toString().padStart(4, '0')} ${pokemonData.name}`
   return <div className={conc(styles.boxSection, styles.header)}>
-    <div className={styles.omgAnotherContainer}>
-      <div className={styles.headerImageContainer}>
+    <div className={styles.headerImageContainer}>
+      <div className={styles.headerImage}>
         <Image
-          className={styles.headerImage}
           src={`/official-art/${imageName}.png`}
           alt={''}
           width={175}
