@@ -16,7 +16,7 @@ function PokemonListItem({ data, selected, onSelect }: {
     <div className={style.rank}>{data.rank}</div>
     <Image 
       className={style.menuSprite}
-      src={'/menu-sprites/0025.png'} 
+      src={`/menu-sprites/${data.name}.png`} 
       alt='' width={64} height={64} />
     <div className={style.pokemonName}>{data.name}</div>
     <div className={style.usageRate}>{percent(data.usageRate)}</div>
