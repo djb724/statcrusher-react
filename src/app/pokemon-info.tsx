@@ -392,8 +392,8 @@ export function InfoDisplayContainer({ pokemonData, status }: {
   pokemonData?: PokemonData,
   status: Status
 }) {
-  if (status === Status.inProgress) return <div>loading...</div>
-  if (status === Status.error || !pokemonData) return <div>An error occured</div>
+  if (status === Status.inProgress) return <div></div>
+  if (status === Status.error || !pokemonData) return <div></div>
 
   return <div>
     <InfoHeader pokemonData={pokemonData} />

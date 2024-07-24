@@ -12,6 +12,30 @@
   grid-row-start: 1;
   grid-row-end: 1;
   border-bottom: var(--line-dark) 1px solid;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: right;
+}
+
+.title {
+  margin: 15px;
+  color: var(--fg-dark-2);
+  text-align: center;
+}
+
+.iconLink {
+  height: 26px;
+  width: 26px;
+  fill: var(--fg-dark);
+  margin: 2px 5px;
+}
+
+.panelContainer {
+  position: sticky;
+  top: 0;
+  background-color: var(--bg-dark);
 }
 
 .sideDisplayContainer {
