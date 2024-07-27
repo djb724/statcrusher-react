@@ -8,7 +8,7 @@ type ApiResponse = {
   data: any
 }
 
-const url = 'https://b8wasaivpe.execute-api.us-east-2.amazonaws.com/beta';
+const url = 'http://b8wasaivpe.execute-api.us-east-2.amazonaws.com/beta';
 
 export async function getPokemonData(params: PathParams, species: string): Promise<PokemonData[]> {
 
