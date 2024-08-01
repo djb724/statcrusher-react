@@ -182,7 +182,7 @@ export default function Home() {
         {/* <h2 className={styles.title}>StatCrusher</h2> */}
         <a
           title={'Twitter'}
-          href={"https://twiiter.com/QueejiboVGC"}
+          href={"https://twitter.com/QueejiboVGC"}
           className={styles.iconLink}
         >
           {/* Twitter */}
@@ -192,7 +192,7 @@ export default function Home() {
         </a>
         <a
           title={'Patreon'}
-          href={""}
+          href={"https://patreon.com/LoveThyEnemy?utm_medium=unknown&utm_source=join_link&utm_campaign=creatorshare_creator&utm_content=copyLink"}
           className={styles.iconLink}
         >
           {/* Patreon */}

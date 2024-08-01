@@ -3,7 +3,8 @@
   border: var(--line-dark) 1px solid;
   overflow-y: hidden;
   margin-bottom: 15px;
-  box-shadow: black 2px 2px 5px 5px;
+  box-shadow: #111111 1px 1px 4px 0px;
+  box-shadow:
 }
 
 .header {
