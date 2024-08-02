@@ -15,7 +15,6 @@ export async function getPokemonData(params: PathParams, species: string): Promi
 
   let {elo, format, month} = params;
   let path = `/stats/${month}/${format}/${elo}/${species}`;
-  console.log(url + path);
   return axios.get(url + path)
   .then((res) => {
     if (res.status !== 200) {
@@ -30,7 +29,6 @@ export async function getUsageData(params: PathParams): Promise<UsageData[]> {
 
   let {elo, format, month} = params;
   let path = `/usage/${month}/${format}/${elo}`;
-  console.log(url + path);
   return axios.get(url + path)
   .then((res) => {
     if (res.status !== 200) {
