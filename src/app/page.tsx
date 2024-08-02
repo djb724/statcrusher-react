@@ -23,9 +23,10 @@ const formats: ButtonOption[] = [
   { name: 'Bo3', value: 'gen9vgc2024reggbo3' }
 ]
 const months: ButtonOption[] = [
+  { name: '2024-07', value: '2024-07' },
   { name: '2024-06', value: '2024-06' },
   { name: '2024-05', value: '2024-05' },
-  { name: '2024-04', value: '2024-04' },
+  { name: '2024-04', value: '2024-04' }
 ]
 const filterOptions: ButtonOption[] = [
   { name: 'All', value: types.RestrictedFilter.all },
@@ -35,7 +36,7 @@ const filterOptions: ButtonOption[] = [
 const defaultParams: types.PathParams = {
   elo: 0,
   format: 'gen9vgc2024reggbo3',
-  month: '2024-06',
+  month: '2024-07',
 }
 
 function SelectorButtonRow({ options, selected, onSelectedChange }: {
