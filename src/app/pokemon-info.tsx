@@ -290,6 +290,21 @@ function NaturesTable({ data }: {
   </table>
 }
 
+function TeraTypesTable({ data }: {
+  data: ValueFrequency[]
+}) {
+  data = truncateData(data, 8);
+  let rows = data.map(row => {
+    return (<tr key={row.value} className={styles.tableRow}>
+      <td className={styles.tableRowSubj}>{row.value}</td>
+      <td className={styles.tableRowValue}>{percent(row.usage)}</td>
+    </tr>)
+  });
+  return <table cellSpacing={0} cellPadding={0} className={styles.table}>
+    {rows}
+  </table>
+}
+
 function StatsTabs({ selected, onSelectedChange }: {
   selected: number,
   onSelectedChange: Function
@@ -426,6 +441,11 @@ export function InfoDisplayContainer({ pokemonData, status }: {
         </Expandable>
       </div>
       <div className={styles.contentSection2}>
+        {pokemonData.teraTypes && 
+        <Expandable title={"Tera Types"} expanded={true}>
+          <TeraTypesTable data={pokemonData.teraTypes} />
+        </Expandable>
+        }
         <Expandable title={"Abilities"} expanded={true}>
           <AbilitiesTable data={pokemonData.abilities} />
         </Expandable>

@@ -63,6 +63,7 @@ export type PokemonData = {
     spd: number
   },
   items: ValueFrequency[],
+  teraTypes: ValueFrequency[],
   key: string
 }
 
