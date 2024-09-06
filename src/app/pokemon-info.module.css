@@ -196,4 +196,27 @@
   margin: 5px;
 }
 
+@media (max-width: 700px) {
+
+  .infoContent {
+    margin-inline: 0px;
+    width: 100%;
+  }
+
+  .boxSection {
+    margin-left: 0px;
+    margin-right: 0px;
+    border-left: none;
+    border-right: none;
+    box-shadow: #000000 1px 1px 5px 0px;
+    width: 100%;
+  }
+
+  .contentSection1 {
+    width: 100%;
+    min-width: 100%;
+  }
+  
+}
+
 

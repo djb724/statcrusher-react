@@ -172,7 +172,7 @@ function Histogram({ stat, datasetType, data }: {
 }
 
 function InfoHeader({ pokemonData }: { pokemonData: PokemonData }) {
-  
+
   let imageName = `${pokemonData.dexNum.toString().padStart(4, '0')} ${pokemonData.name}`
   return <div className={conc(styles.boxSection, styles.header)}>
     <div className={styles.headerImageContainer}>
@@ -189,14 +189,16 @@ function InfoHeader({ pokemonData }: { pokemonData: PokemonData }) {
       <h3>{pokemonData.name}</h3>
       <Types types={pokemonData.type} />
       <table className={styles.headerTable}>
-        <tr>
-          <td>Usage:</td>
-          <td>{percent(pokemonData.usageRate)}</td>
-        </tr>
-        <tr>
-          <td>Raw Count:</td>
-          <td>{pokemonData.rawCount}</td>
-        </tr>
+        <tbody>
+          <tr>
+            <td>Usage:</td>
+            <td>{percent(pokemonData.usageRate)}</td>
+          </tr>
+          <tr>
+            <td>Raw Count:</td>
+            <td>{pokemonData.rawCount}</td>
+          </tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -224,7 +226,7 @@ function AbilitiesTable({ data }: {
     </tr>)
   })
   return <table cellPadding={0} cellSpacing={0} className={styles.table}>
-    {rows}
+    <tbody>{rows}</tbody>
   </table>
 }
 
@@ -239,7 +241,7 @@ function ItemsTable({ data }: {
     </tr>)
   })
   return <table cellSpacing={0} cellPadding={0} className={styles.table}>
-    {rows}
+    <tbody>{rows}</tbody>
   </table>
 }
 
@@ -254,7 +256,7 @@ function MovesTable({ data }: {
     </tr>)
   })
   return <table cellSpacing={0} cellPadding={0} className={styles.table}>
-    {rows}
+    <tbody>{rows}</tbody>
   </table>
 }
 
@@ -270,7 +272,7 @@ function TeammatesTable({ data }: {
   })
   return <div className={styles.teammatesTableContainer}>
     <table cellSpacing={0} cellPadding={0} className={conc(styles.table)}>
-      {rows}
+      <tbody>{rows}</tbody>
     </table>
   </div>
 }
@@ -286,7 +288,7 @@ function NaturesTable({ data }: {
     </tr>)
   })
   return <table cellSpacing={0} cellPadding={0} className={styles.table}>
-    {rows}
+    <tbody>{rows}</tbody>
   </table>
 }
 
@@ -301,7 +303,7 @@ function TeraTypesTable({ data }: {
     </tr>)
   });
   return <table cellSpacing={0} cellPadding={0} className={styles.table}>
-    {rows}
+    <tbody>{rows}</tbody>
   </table>
 }
 
@@ -353,18 +355,20 @@ function StatsTable({ stats }: {
 
   return <div>
     <table className={styles.statsTendenciesTable} cellSpacing={0}>
-      <tr>
-        <td width={'50%'}>Median:</td>
-        <td width={'50%'}>{stats.quartile2}</td>
-      </tr>
-      <tr>
-        <td width={'50%'}>Interquartile Range:</td>
-        <td width={'50%'}>{stats.quartile1} - {stats.quartile3}</td>
-      </tr>
-      <tr>
-        <td width={'50%'}>Mean:</td>
-        <td width={'50%'}>{stats.mean.toFixed(2)}</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td width={'50%'}>Median:</td>
+          <td width={'50%'}>{stats.quartile2}</td>
+        </tr>
+        <tr>
+          <td width={'50%'}>Interquartile Range:</td>
+          <td width={'50%'}>{stats.quartile1} - {stats.quartile3}</td>
+        </tr>
+        <tr>
+          <td width={'50%'}>Mean:</td>
+          <td width={'50%'}>{stats.mean.toFixed(2)}</td>
+        </tr>
+      </tbody>
     </table>
     <StatsTabs selected={selected} onSelectedChange={setSelected} />
     {selected === 0 && <Histogram stat={'speed'} datasetType={0} data={stats.frequency} />}
@@ -441,10 +445,10 @@ export function InfoDisplayContainer({ pokemonData, status }: {
         </Expandable>
       </div>
       <div className={styles.contentSection2}>
-        {pokemonData.teraTypes && 
-        <Expandable title={"Tera Types"} expanded={true}>
-          <TeraTypesTable data={pokemonData.teraTypes} />
-        </Expandable>
+        {pokemonData.teraTypes &&
+          <Expandable title={"Tera Types"} expanded={true}>
+            <TeraTypesTable data={pokemonData.teraTypes} />
+          </Expandable>
         }
         <Expandable title={"Abilities"} expanded={true}>
           <AbilitiesTable data={pokemonData.abilities} />

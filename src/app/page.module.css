@@ -1,6 +1,6 @@
 .main {
   display: grid;
-  grid-template-columns: 350px auto 200px;
+  grid-template-columns: 350px auto;
   grid-template-rows: 30px auto;
   height: 100vh;
   width: 100vw;
@@ -12,11 +12,55 @@
   grid-row-start: 1;
   grid-row-end: 1;
   border-bottom: var(--line-dark) 1px solid;
+}
 
+.listIcon {
+  float: left;
+  display: none;
+}
+
+.listCloseContainer {
+  height: 50px;
+  position: sticky;
+}
+
+.listClose {
+  display: block;
+  float: right;
+  z-index: 1;
+}
+
+.socialLinks {
   display: flex;
   flex-direction: row;
+  height: 100%;
+  float: right;
   align-items: center;
-  justify-content: right;
+}
+
+.slideInComponent {
+  display: none;
+  transition: 300ms;
+}
+
+.slideInComponentOpen {
+  left: 0px;
+}
+
+.slideInComponentClosed {
+  left: -361px;
+}
+
+.cover {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  background: transparent;
+  display: none;
+}
+
+.coverOpen {
+  display: block;
 }
 
 .title {
@@ -25,11 +69,20 @@
   text-align: center;
 }
 
-.iconLink {
+.buttonIcon {
+  cursor: pointer;
   height: 26px;
   width: 26px;
-  fill: var(--fg-dark);
+  fill: var(--fg-dark-2);
+  color: var(--fg-dark-2);
   margin: 2px 5px;
+  border: none;
+  background: transparent;
+}
+
+.buttonIcon:hover {
+  fill: var(--fg-dark);
+  color: var(--fg-dark);
 }
 
 .panelContainer {
@@ -43,7 +96,6 @@
   grid-row-end: 3;
   grid-column-start: 1;
   grid-column-end: 2;
-  overflow-y: auto;
   border-right: var(--line-dark) 1px solid;
 }
 
@@ -128,17 +180,50 @@
   grid-column-start: 2;
   grid-column-end: 4;
   grid-row: 2;
+}
+
+.scrollable {
   overflow-y: auto;
+  scrollbar-color: var(--fg-dark-2) transparent;
+  scrollbar-width: none;
 }
 
 /* Mobile */
 @media (max-width: 700px) {
   .main {
     display: grid;
-    grid-template-columns: 350px auto;
-    grid-template-rows: 30px auto;
+    grid-template-columns: 0 auto;
+    grid-template-rows: 50px auto;
     height: 100vh;
-    width: 100vw;  
+    width: 100vw;
+  }
+
+  .listIcon {
+    display: block;
+  }
+
+  .sideDisplayContainer {
+    display: none;
+    background-color: var(--bg-dark);
+  }
+
+  .slideInComponent {
+    display: block;
+    position: fixed;
+    /* border-right: 1px solid var(--fg-dark-2); */
+  }
+
+  .slideInContainer {
+    height: 100vh;
+    width: 360px;
+    background: var(--bg-dark);
+    border-right: 1px solid var(--line-dark);
+  }
+
+  .buttonIcon {
+    height: 36px;
+    width: 36px;
+    margin: 7px;
   }
 }
 /* Tablet and Smaller Desktop */
