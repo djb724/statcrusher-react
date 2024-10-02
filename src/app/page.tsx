@@ -23,6 +23,7 @@ const formats: ButtonOption[] = [
   { name: 'Bo3', value: 'gen9vgc2024reghbo3' }
 ]
 const months: ButtonOption[] = [
+  { name: '2024-09', value: '2024-09' },
   { name: '2024-08', value: '2024-08' }
   // { name: '2024-07', value: '2024-07' },
   // { name: '2024-06', value: '2024-06' },
@@ -37,7 +38,7 @@ const filterOptions: ButtonOption[] = [
 const defaultParams: types.PathParams = {
   elo: 0,
   format: 'gen9vgc2024reghbo3',
-  month: '2024-08',
+  month: '2024-09',
 }
 const showRestrictedFilter = false;
 
@@ -75,10 +76,9 @@ function SelectorDropdown({ options, selected, onSelectedChange }: {
     return <option
       value={option.value}
       key={option.value}
-      onClick={() => onSelectedChange(option.value)}
     >{option.name}</option>
   })
-  return <select className={styles.selector}>
+  return <select className={styles.selector} onChange={(event) => {onSelectedChange(event.target.value)}}>
     {optionEls}
   </select>
 }
