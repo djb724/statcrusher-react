@@ -1,25 +1,37 @@
 import {RestrictedFilter, UsageData, Status} from './types';
 import Image from 'next/image';
-import style from './page.module.css'
-import { percent } from "./util";
+import styles from './pokemon-list.module.css'
+import { percent, conc } from "./util";
 
 function PokemonListItem({ data, selected, onSelect }: {
   data: UsageData, selected: boolean, onSelect: () => void
 }): JSX.Element {
 
-  let className = style.pokemonListItem + ' ';
-  className += selected ? style.pokemonListItemSelected : '';
+  let className = styles.pokemonListItem + ' ';
+  className += selected ? styles.pokemonListItemSelected : '';
 
   return (<div  
       className={className}
       onClick={onSelect}>
-    <div className={style.rank}>{data.rank}</div>
+    <div className={styles.rank}>{data.rank}</div>
     <Image 
-      className={style.menuSprite}
+      className={styles.menuSprite}
       src={`/menu-sprites/${data.name}.png`} 
       alt='' width={64} height={64} />
-    <div className={style.pokemonName}>{data.name}</div>
-    <div className={style.usageRate}>{percent(data.usageRate)}</div>
+    <div className={styles.pokemonName}>{data.name}</div>
+    <div className={styles.usageRate}>{percent(data.usageRate)}</div>
+  </div>)
+}
+
+function AggregateListItem({ selected, onSelect }: {
+  selected: boolean, onSelect: () => void
+}): JSX.Element {
+
+  return (<div
+      className={conc(styles.aggregateListItem, selected ? 'selected' : '')}
+      onClick={onSelect}>
+    <div className={styles.pokemonName}>All Pokemon</div>
+    <div className={styles.usageRate}>100.0%</div>
   </div>)
 }
 
@@ -44,6 +56,7 @@ export default function PokemonList({ data, status, restrictedFilter, selectedPo
     return <PokemonListItem key={`li${ud.name}`} data={ud} selected={s} onSelect={() => onSelectedPokemonChange(ud.name)} />
   });
   return <div>
+    <AggregateListItem selected={selectedPokemon==='Metagame'} onSelect={() => onSelectedPokemonChange('Metagame')} />
     {elementList}
   </div>
 }

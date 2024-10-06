@@ -67,7 +67,18 @@ export type PokemonData = {
   key: string
 }
 
+export type AggregateData = {
+  stats: {
+    hp: StatsFrequencies,
+    atk: StatsFrequencies,
+    def: StatsFrequencies,
+    satk: StatsFrequencies,
+    sdef: StatsFrequencies,
+    spd: StatsFrequencies
+  },
+}
 
+export type DisplayData = PokemonData | AggregateData
 
 export enum Status {
   "inProgress",

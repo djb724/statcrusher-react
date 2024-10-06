@@ -5,7 +5,7 @@ import * as types from './types';
 import { getUsageData, getPokemonData } from './api';
 import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
-import { InfoDisplayContainer } from "./pokemon-info";
+import { InfoDisplay } from "./pokemon-info";
 import { conc } from './util';
 
 type ButtonOption = {
@@ -78,7 +78,7 @@ function SelectorDropdown({ options, selected, onSelectedChange }: {
       key={option.value}
     >{option.name}</option>
   })
-  return <select className={styles.selector} onChange={(event) => {onSelectedChange(event.target.value)}}>
+  return <select className={styles.selector} onChange={(event) => { onSelectedChange(event.target.value) }}>
     {optionEls}
   </select>
 }
@@ -143,6 +143,7 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
           restrictedFilter={restrictedFilter}
           onRestrictedFilterChange={setRestrictedFilter} />
       </div>
+      <div></div>
       <PokemonList
         data={usage}
         status={status}
@@ -171,8 +172,8 @@ function SlideInComponent({ open, onOpenChange, children }: {
 export default function Home(): JSX.Element {
 
   let [params, setParams]: [types.PathParams, (params: types.PathParams) => void] = useState({ ...defaultParams });
-  let [selectedPokemon, setSelectedPokemon]: [string, (pokemon: string) => void] = useState('');
-  let [pokemonData, setPokemonData]: [types.PokemonData | undefined, Function] = useState();
+  let [selectedPokemon, setSelectedPokemon]: [string, (pokemon: string) => void] = useState('Metagame');
+  let [pokemonData, setPokemonData]: [types.DisplayData | undefined, Function] = useState();
   let [infoStatus, setInfoStatus]: [types.Status, Function] = useState(types.Status.inProgress)
   let [open, setOpen]: [boolean, Function] = useState(true);
 
@@ -253,12 +254,12 @@ export default function Home(): JSX.Element {
           onSelectedPokemonChange={setSelectedPokemon} />
       </div>
       <div className={conc(styles.contentPanel, styles.scrollable)}>
-        <InfoDisplayContainer
-          pokemonData={pokemonData}
-          status={infoStatus} />
+        <InfoDisplay
+          params={params}
+          selectedPokemon={selectedPokemon} />
       </div>
-      <div 
-        onClick={() => setOpen(false)} 
+      <div
+        onClick={() => setOpen(false)}
         className={conc(styles.cover, (open ? styles.coverOpen : ''))} />
       <SlideInComponent open={open} onOpenChange={setOpen}>
         <div className={styles.listCloseContainer}>
@@ -266,7 +267,7 @@ export default function Home(): JSX.Element {
             onClick={() => setOpen(false)}
             className={conc(styles.buttonIcon, styles.listClose)}>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" />
+              <path fill-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" />
             </svg>
           </button>
         </div>

@@ -70,6 +70,10 @@
   flex: 1;
 }
 
+.aggregateContent {
+  margin: 15px;
+}
+
 .expandableHeader {
   display: flex;
   flex-direction: row;
@@ -199,6 +203,11 @@
 @media (max-width: 700px) {
 
   .infoContent {
+    margin-inline: 0px;
+    width: 100%;
+  }
+
+  .aggregateContent {
     margin-inline: 0px;
     width: 100%;
   }

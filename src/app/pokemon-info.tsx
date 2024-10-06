@@ -1,10 +1,12 @@
-import { PokemonData, StatsFrequencies, Status, ValueFrequency } from "./types"
+import { AggregateData, DisplayData, PathParams, PokemonData, StatsFrequencies, Status, ValueFrequency } from "./types"
 import { conc, percent } from "./util";
 import styles from "./pokemon-info.module.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Chart, ChartData, registerables, TooltipItem } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import Image from "next/image";
+import { getPokemonData } from "./api";
+import { ErrorComponent, LoadingComponent } from "./components";
 
 Chart.register(...registerables);
 
@@ -407,65 +409,141 @@ function Expandable({ expanded = true, title, children }: {
   </div>
 }
 
-export function InfoDisplayContainer({ pokemonData, status }: {
-  pokemonData?: PokemonData,
-  status: Status
+export function InfoDisplayContainer({ data }: {
+  data: PokemonData,
 }) {
-  if (status === Status.inProgress) return <div></div>
-  if (status === Status.error || !pokemonData) return <div></div>
-
+  if (!data) return;
+  
   return <div>
-    <InfoHeader pokemonData={pokemonData} />
+    <InfoHeader pokemonData={data} />
 
     <div className={styles.infoContent}>
       <div className={styles.contentSection1}>
-        <Expandable title={`Speed (${pokemonData.baseStats.spd})`} expanded={true}>
-          <StatsTable stats={pokemonData.stats.spd} />
+        <Expandable title={`Speed (${data.baseStats.spd})`} expanded={true}>
+          <StatsTable stats={data.stats.spd} />
           <div className={styles.footnote}>
             * 0 IVs is assumed when instances have 0 EVs and a hindering nature.
           </div>
         </Expandable>
-        <Expandable title={`HP (${pokemonData.baseStats.hp})`} expanded={false}>
-          <StatsTable stats={pokemonData.stats.hp} />
+        <Expandable title={`HP (${data.baseStats.hp})`} expanded={false}>
+          <StatsTable stats={data.stats.hp} />
         </Expandable>
-        <Expandable title={`Attack (${pokemonData.baseStats.atk})`} expanded={false}>
-          <StatsTable stats={pokemonData.stats.atk} />
+        <Expandable title={`Attack (${data.baseStats.atk})`} expanded={false}>
+          <StatsTable stats={data.stats.atk} />
           <div className={styles.footnote}>
             * 0 IVs is assumed when instances have 0 EVs and a hindering nature.
           </div>
         </Expandable>
-        <Expandable title={`Defense (${pokemonData.baseStats.def})`} expanded={false}>
-          <StatsTable stats={pokemonData.stats.def} />
+        <Expandable title={`Defense (${data.baseStats.def})`} expanded={false}>
+          <StatsTable stats={data.stats.def} />
         </Expandable>
-        <Expandable title={`Special Attack (${pokemonData.baseStats.satk})`} expanded={false}>
-          <StatsTable stats={pokemonData.stats.satk} />
+        <Expandable title={`Special Attack (${data.baseStats.satk})`} expanded={false}>
+          <StatsTable stats={data.stats.satk} />
         </Expandable>
-        <Expandable title={`Special Defense (${pokemonData.baseStats.sdef})`} expanded={false}>
-          <StatsTable stats={pokemonData.stats.sdef} />
+        <Expandable title={`Special Defense (${data.baseStats.sdef})`} expanded={false}>
+          <StatsTable stats={data.stats.sdef} />
         </Expandable>
       </div>
       <div className={styles.contentSection2}>
-        {pokemonData.teraTypes &&
+        {data.teraTypes &&
           <Expandable title={"Tera Types"} expanded={true}>
-            <TeraTypesTable data={pokemonData.teraTypes} />
+            <TeraTypesTable data={data.teraTypes} />
           </Expandable>
         }
         <Expandable title={"Abilities"} expanded={true}>
-          <AbilitiesTable data={pokemonData.abilities} />
+          <AbilitiesTable data={data.abilities} />
         </Expandable>
         <Expandable title={"Items"} expanded={true}>
-          <ItemsTable data={pokemonData.items} />
+          <ItemsTable data={data.items} />
         </Expandable>
         <Expandable title={"Moves"} expanded={true}>
-          <MovesTable data={pokemonData.moves} />
+          <MovesTable data={data.moves} />
         </Expandable>
         <Expandable title={"Teammates"} expanded={false}>
-          <TeammatesTable data={pokemonData.teammates} />
+          <TeammatesTable data={data.teammates} />
         </Expandable>
         <Expandable title={"Natures"} expanded={false}>
-          <NaturesTable data={pokemonData.natures} />
+          <NaturesTable data={data.natures} />
         </Expandable>
       </div>
     </div>
   </div>
 }
+
+export function AggregateDisplayContainer({ data }: {
+  data: AggregateData,
+}): JSX.Element {
+
+  if (!data) return <ErrorComponent />;
+
+  return (<div>
+
+    <div className={styles.aggregateContent}>
+      <Expandable title={`Speed`} expanded={true}>
+        <StatsTable stats={data.stats.spd} />
+        <div className={styles.footnote}>
+          * 0 IVs is assumed when instances have 0 EVs and a hindering nature.
+        </div>
+      </Expandable>
+      <Expandable title={`HP`} expanded={false}>
+        <StatsTable stats={data.stats.hp} />
+      </Expandable>
+      <Expandable title={`Attack`} expanded={false}>
+        <StatsTable stats={data.stats.atk} />
+        <div className={styles.footnote}>
+          * 0 IVs is assumed when instances have 0 EVs and a hindering nature.
+        </div>
+      </Expandable>
+      <Expandable title={`Defense`} expanded={false}>
+        <StatsTable stats={data.stats.def} />
+      </Expandable>
+      <Expandable title={`Special Attack`} expanded={false}>
+        <StatsTable stats={data.stats.satk} />
+      </Expandable>
+      <Expandable title={`Special Defense`} expanded={false}>
+        <StatsTable stats={data.stats.sdef} />
+      </Expandable>
+    </div>
+  </div>)
+}
+
+export function InfoDisplay({ params, selectedPokemon }: {
+  params: PathParams,
+  selectedPokemon: string
+}): JSX.Element {
+
+  let [status, setStatus]: [Status, Function] = useState(Status.inProgress)
+  let [pokemonData, setPokemonData]: [PokemonData | undefined, Function] = useState();
+  let [aggregateData, setAggregateData]: [AggregateData | undefined, Function] = useState();
+
+  useEffect(() => {
+    if (!selectedPokemon) return;
+    setStatus(Status.inProgress);
+    getPokemonData(params, selectedPokemon)
+      .then((data) => {
+        if (selectedPokemon === 'Metagame') {
+          setAggregateData(data);
+          setStatus(Status.complete);
+        }
+        else {
+          setPokemonData(data);
+          setStatus(Status.complete);
+        }
+      })
+      .catch((err) => {
+        console.error(err);
+        setStatus(Status.error);
+      })
+  }, [params, selectedPokemon])
+
+  if (status === Status.inProgress) return <LoadingComponent />
+  if (status === Status.error) return <ErrorComponent />
+
+  if (selectedPokemon === 'Metagame') 
+    return <AggregateDisplayContainer 
+      data={aggregateData as AggregateData} />
+  
+  return <InfoDisplayContainer 
+    data={pokemonData as PokemonData}/>
+}
+
