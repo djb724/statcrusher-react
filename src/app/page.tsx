@@ -2,7 +2,7 @@
 
 import styles from "./page.module.css";
 import * as types from './types';
-import { getUsageData, getPokemonData } from './api';
+import { getUsageData } from './api';
 import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
@@ -112,7 +112,6 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
   </div>
 }
 
-
 function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonChange }: {
   params: types.PathParams, onParamsChange: (params: types.PathParams) => void,
   selectedPokemon?: string, onSelectedPokemonChange: (selectedPokemon: string) => void
@@ -173,23 +172,7 @@ export default function Home(): JSX.Element {
 
   let [params, setParams]: [types.PathParams, (params: types.PathParams) => void] = useState({ ...defaultParams });
   let [selectedPokemon, setSelectedPokemon]: [string, (pokemon: string) => void] = useState('Metagame');
-  let [pokemonData, setPokemonData]: [types.DisplayData | undefined, Function] = useState();
-  let [infoStatus, setInfoStatus]: [types.Status, Function] = useState(types.Status.inProgress)
   let [open, setOpen]: [boolean, Function] = useState(true);
-
-  useEffect(() => {
-    if (!selectedPokemon) return;
-    setInfoStatus(types.Status.inProgress);
-    getPokemonData(params, selectedPokemon)
-      .then((data) => {
-        setPokemonData(data);
-        setInfoStatus(types.Status.complete);
-      })
-      .catch((err) => {
-        console.error(err);
-        setInfoStatus(types.Status.error);
-      })
-  }, [params, selectedPokemon])
 
   return (
     <div className={styles.main}>

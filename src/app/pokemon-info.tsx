@@ -409,7 +409,7 @@ function Expandable({ expanded = true, title, children }: {
   </div>
 }
 
-export function InfoDisplayContainer({ data }: {
+export function PokemonInfo({ data }: {
   data: PokemonData,
 }) {
   if (!data) return;
@@ -470,7 +470,7 @@ export function InfoDisplayContainer({ data }: {
   </div>
 }
 
-export function AggregateDisplayContainer({ data }: {
+export function AggregateInfo({ data }: {
   data: AggregateData,
 }): JSX.Element {
 
@@ -540,10 +540,10 @@ export function InfoDisplay({ params, selectedPokemon }: {
   if (status === Status.error) return <ErrorComponent />
 
   if (selectedPokemon === 'Metagame') 
-    return <AggregateDisplayContainer 
+    return <AggregateInfo 
       data={aggregateData as AggregateData} />
   
-  return <InfoDisplayContainer 
+  return <PokemonInfo 
     data={pokemonData as PokemonData}/>
 }
 
