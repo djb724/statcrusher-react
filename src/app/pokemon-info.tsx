@@ -1,12 +1,12 @@
 import { AggregateData, DisplayData, PathParams, PokemonData, StatsFrequencies, Status, ValueFrequency } from "./types"
 import { conc, percent } from "./util";
 import styles from "./pokemon-info.module.css";
-import { useState, useEffect } from "react";
+import { useState, useEffect, DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_ACTIONS } from "react";
 import { Chart, ChartData, registerables, TooltipItem } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import Image from "next/image";
 import { getPokemonData } from "./api";
-import { ErrorComponent, LoadingComponent } from "./components";
+import { ErrorComponent, LoadingComponent, TextBox, Button } from "./components";
 
 Chart.register(...registerables);
 
@@ -126,10 +126,11 @@ function Types({ types }: { types: string[] }) {
   return <div className={styles.types}>{types.join(' / ')}</div>
 }
 
-function Histogram({ stat, datasetType, data }: {
-  stat: string,
+function Histogram({ datasetType, data, min, max }: {
   datasetType: number,
-  data: ValueFrequency[]
+  data: ValueFrequency[],
+  min: number,
+  max: number
 }) {
 
   let datasetOptions = {}
@@ -160,6 +161,8 @@ function Histogram({ stat, datasetType, data }: {
       options = chartOptionsDesc;
       break;
   }
+
+  data = data.filter(d => +d.value >= min && +d.value <= max)
 
   const chartData = {
     labels: data.map(a => a.value),
@@ -350,10 +353,46 @@ function StatsTabs({ selected, onSelectedChange }: {
   </div>
 }
 
+function RangeSelector({ min, onMinChange, max, onMaxChange, onReset }: {
+  min: number, onMinChange: Function,
+  max: number, onMaxChange: Function,
+  onReset: () => void
+}): JSX.Element {
+
+  return <div className={styles.rangeSelectorContainer}>
+    <span>Range:</span>
+    <TextBox value={'' + min} onValueChange={(v: string) => onMinChange(+v)} />
+    <span>-</span>
+    <TextBox value={'' + max} onValueChange={(v: string) => onMaxChange(+v)} />
+    <Button onClick={onReset}>Reset</Button>
+  </div>
+}
+
+function statsTransform(data: ValueFrequency[], min: number, max: number, multiplier: number) {
+  let filtered = data.filter((p: ValueFrequency) => +p.value >= min && +p.value <= max)
+    
+}
+
+function MultiplierSelector({ multiplier, onMultiplierChange }: {
+  multiplier: number,
+  onMultiplierChange: (multiplier: number) => void
+}) {
+  // TODO
+  return
+}
+
 function StatsTable({ stats }: {
   stats: StatsFrequencies
 }) {
   let [selected, setSelected] = useState(0);
+  let [min, setMin] = useState(stats.min);
+  let [max, setMax] = useState(stats.max);
+  // let [multiplier, setMultiplier] = useState(0);
+
+  function resetRange() {
+    setMin(stats.min);
+    setMax(stats.max);
+  }
 
   return <div>
     <table className={styles.statsTendenciesTable} cellSpacing={0}>
@@ -372,10 +411,13 @@ function StatsTable({ stats }: {
         </tr>
       </tbody>
     </table>
+    <RangeSelector min={min} onMinChange={setMin} 
+      max={max} onMaxChange={setMax} onReset={resetRange}/>
+    {/* <MultiplierSelector /> */}
     <StatsTabs selected={selected} onSelectedChange={setSelected} />
-    {selected === 0 && <Histogram stat={'speed'} datasetType={0} data={stats.frequency} />}
-    {selected === 1 && <Histogram stat={'speed'} datasetType={1} data={stats.cumulativeFreq} />}
-    {selected === 2 && <Histogram stat={'speed'} datasetType={2} data={stats.cumulativeDesc} />}
+    {selected === 0 && <Histogram datasetType={0} data={stats.frequency} min={min} max={max} />}
+    {selected === 1 && <Histogram datasetType={1} data={stats.cumulativeFreq} min={min} max={max} />}
+    {selected === 2 && <Histogram datasetType={2} data={stats.cumulativeDesc} min={min} max={max} />}
 
   </div>
 }

@@ -31,7 +31,7 @@ function AggregateListItem({ selected, onSelect }: {
       className={conc(styles.aggregateListItem, selected ? 'selected' : '')}
       onClick={onSelect}>
     <div className={styles.pokemonName}>All Pokemon</div>
-    <div className={styles.usageRate}>100.0%</div>
+    <div className={styles.aggregateUsageRate}>100.00%</div>
   </div>)
 }
 

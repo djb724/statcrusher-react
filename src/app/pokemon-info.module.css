@@ -200,6 +200,12 @@
   margin: 5px;
 }
 
+.rangeSelectorContainer,
+.multiplierSelector {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
 @media (max-width: 700px) {
 
   .infoContent {

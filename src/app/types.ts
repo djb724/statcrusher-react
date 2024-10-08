@@ -4,6 +4,12 @@ export enum RestrictedFilter {
   "nonrestricted"
 }
 
+export type ButtonOption = {
+  name: string,
+  value: any
+}
+
+
 export type PathParams = {
   elo: number,
   format: string,
@@ -25,10 +31,14 @@ export type ValueFrequency = {
 }
 
 export type StatsFrequencies = {
+  min: number,
+  max: number,
   mean: number,
   quartile1: number,
   quartile2: number,
   quartile3: number,
+  p10: number,
+  p90: number,
   frequency: ValueFrequency[],
   cumulativeFreq: ValueFrequency[],
   cumulativeDesc: ValueFrequency[]

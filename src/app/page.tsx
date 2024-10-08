@@ -7,22 +7,19 @@ import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
 import { conc } from './util';
+import { Button, SelectorButtonRow } from "./components";
 
-type ButtonOption = {
-  name: string,
-  value: any
-}
-const elos: ButtonOption[] = [
+const elos: types.ButtonOption[] = [
   { name: 'Any Elo', value: 0 },
   { name: '1500+', value: 1500 },
   { name: '1630+', value: 1630 },
   { name: '1760+', value: 1760 }
 ]
-const formats: ButtonOption[] = [
+const formats: types.ButtonOption[] = [
   { name: 'Bo1', value: 'gen9vgc2024regh' },
   { name: 'Bo3', value: 'gen9vgc2024reghbo3' }
 ]
-const months: ButtonOption[] = [
+const months: types.ButtonOption[] = [
   { name: '2024-09', value: '2024-09' },
   { name: '2024-08', value: '2024-08' }
   // { name: '2024-07', value: '2024-07' },
@@ -30,7 +27,7 @@ const months: ButtonOption[] = [
   // { name: '2024-05', value: '2024-05' },
   // { name: '2024-04', value: '2024-04' }
 ]
-const filterOptions: ButtonOption[] = [
+const filterOptions: types.ButtonOption[] = [
   { name: 'All', value: types.RestrictedFilter.all },
   { name: 'Restricted', value: types.RestrictedFilter.restricted },
   { name: 'Non-Restricted', value: types.RestrictedFilter.nonrestricted }
@@ -42,43 +39,16 @@ const defaultParams: types.PathParams = {
 }
 const showRestrictedFilter = false;
 
-function SelectorButtonRow({ options, selected, onSelectedChange }: {
-  options: ButtonOption[], selected: (string | number), onSelectedChange: Function
-}) {
-  let optionSelected = false;
-  let buttons: any = options.map((opt: ButtonOption) => {
-    let classes: string = styles.selector;
-    if (selected === opt.value) {
-      classes += ' ' + styles.selected;
-      optionSelected = true;
-    }
-    return (
-      <button
-        className={classes}
-        onClick={() => onSelectedChange(opt.value)}
-        key={opt.value}
-      >{opt.name}</button>
-    )
-  })
-
-  if (!optionSelected)
-    console.warn(`Selected option '${selected}' is not in the list`);
-
-  return <div className={styles.selectorRow}>
-    {buttons}
-  </div>
-}
-
 function SelectorDropdown({ options, selected, onSelectedChange }: {
-  options: ButtonOption[], selected: string, onSelectedChange: Function
+  options: types.ButtonOption[], selected: string, onSelectedChange: Function
 }) {
-  let optionEls = options.map((option: ButtonOption) => {
+  let optionEls = options.map((option: types.ButtonOption) => {
     return <option
       value={option.value}
       key={option.value}
     >{option.name}</option>
   })
-  return <select className={styles.selector} onChange={(event) => { onSelectedChange(event.target.value) }}>
+  return <select className={styles.selector} value={selected} onChange={(event) => { onSelectedChange(event.target.value) }}>
     {optionEls}
   </select>
 }
@@ -86,7 +56,7 @@ function SelectorDropdown({ options, selected, onSelectedChange }: {
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange }:
   {
     params: types.PathParams, onParamsChange: (params: types.PathParams) => void,
-    restrictedFilter: types.RestrictedFilter, onRestrictedFilterChange: Function
+    restrictedFilter: types.RestrictedFilter, onRestrictedFilterChange: (selected: string) => void
   }
 ) {
 
@@ -140,7 +110,7 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
           params={params}
           onParamsChange={onParamsChange}
           restrictedFilter={restrictedFilter}
-          onRestrictedFilterChange={setRestrictedFilter} />
+          onRestrictedFilterChange={(s) => setRestrictedFilter(s)} />
       </div>
       <div></div>
       <PokemonList

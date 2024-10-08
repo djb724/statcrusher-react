@@ -51,3 +51,9 @@
   color: var(--fg-dark-2);
   margin-right: 3px;
 }
+
+.aggregateUsageRate {
+  flex-basis: 72px;
+  color: var(--fg-dark-2);
+  margin-right: 3px;
+}

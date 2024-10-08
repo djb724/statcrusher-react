@@ -107,7 +107,7 @@
   padding-block: 0px;
   border-radius: 9px;
   border: 2px solid var(--hilight);
-  margin: 8px 4px;
+  margin: 8px 0px;
   background-color: var(--bg-dark-2);
   color: var(--fg-dark);
   cursor: pointer;
@@ -122,10 +122,6 @@
 .selector:hover {
   background-color: var(--hilight);
   color: white;
-}
-
-.selectorRow {
-  text-align: center
 }
 
 .selected {
