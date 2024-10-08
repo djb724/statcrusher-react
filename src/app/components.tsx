@@ -58,4 +58,18 @@ export function SelectorButtonRow({ options, selected, onSelectedChange }: {
   </div>
 }
 
+export function Dropdown({ options, selected, onSelectedChange }: {
+  options: ButtonOption[], selected: string, onSelectedChange: Function
+}) {
+  let optionEls = options.map((option: ButtonOption) => {
+    return <option
+      className={styles.dropdownOption}
+      value={option.value}
+      key={option.value}
+    >{option.name}</option>
+  })
+  return <select className={styles.dropdown} value={selected} onChange={(event) => { onSelectedChange(event.target.value) }}>
+    {optionEls}
+  </select>
+}
 

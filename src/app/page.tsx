@@ -7,7 +7,7 @@ import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
 import { conc } from './util';
-import { Button, SelectorButtonRow } from "./components";
+import { Button, SelectorButtonRow, Dropdown } from "./components";
 
 const elos: types.ButtonOption[] = [
   { name: 'Any Elo', value: 0 },
@@ -39,20 +39,6 @@ const defaultParams: types.PathParams = {
 }
 const showRestrictedFilter = false;
 
-function SelectorDropdown({ options, selected, onSelectedChange }: {
-  options: types.ButtonOption[], selected: string, onSelectedChange: Function
-}) {
-  let optionEls = options.map((option: types.ButtonOption) => {
-    return <option
-      value={option.value}
-      key={option.value}
-    >{option.name}</option>
-  })
-  return <select className={styles.selector} value={selected} onChange={(event) => { onSelectedChange(event.target.value) }}>
-    {optionEls}
-  </select>
-}
-
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange }:
   {
     params: types.PathParams, onParamsChange: (params: types.PathParams) => void,
@@ -70,7 +56,7 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
         options={formats}
         selected={params.format}
         onSelectedChange={(format: string | number) => onParamsChange({ ...params, format: format as string })} />
-      <SelectorDropdown
+      <Dropdown
         options={months}
         selected={params.month}
         onSelectedChange={(month: string) => onParamsChange({ ...params, month: month })} />

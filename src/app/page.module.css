@@ -99,35 +99,10 @@
   border-right: var(--line-dark) 1px solid;
 }
 
-.selector {
-  height: 22px;
-  font-size: 16px;
-  line-height: 18px;
-  padding-inline: 9px;
-  padding-block: 0px;
-  border-radius: 9px;
-  border: 2px solid var(--hilight);
-  margin: 8px 0px;
-  background-color: var(--bg-dark-2);
-  color: var(--fg-dark);
-  cursor: pointer;
-}
-
 .flexRow {
   display: flex;
   flex-direction: row;
   justify-content: center;
-}
-
-.selector:hover {
-  background-color: var(--hilight);
-  color: white;
-}
-
-.selected {
-  background-color: white;
-  border-color: var(--hilight);
-  color: var(--hilight);
 }
 
 .contentPanel {
