@@ -69,10 +69,6 @@
   color: var(--hilight);
 }
 
-.dcLinkContainerMobile {
-  display: none;
-}
-
 .socialLinks {
   display: flex;
   flex-direction: row;

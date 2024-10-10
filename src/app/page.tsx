@@ -179,11 +179,6 @@ export default function Home(): JSX.Element {
             </li>
           </ul>
         </div>
-        <div className={styles.dcLinkContainerMobile}>
-          <a href={'https://devoncorp.press/'}>
-            <Image src={'/dc.png'} alt={'DevonCorp'} width={50} height={50} />
-          </a>
-        </div>
         <div className={styles.socialLinks}>
           <a
             title={'Twitter'}
