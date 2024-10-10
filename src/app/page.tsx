@@ -7,7 +7,8 @@ import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
 import { conc } from './util';
-import { Button, SelectorButtonRow, Dropdown } from "./components";
+import { SelectorButtonRow, Dropdown } from "./components";
+import Image from "next/image";
 
 const elos: types.ButtonOption[] = [
   { name: 'Any Elo', value: 0 },
@@ -133,7 +134,6 @@ export default function Home(): JSX.Element {
   return (
     <div className={styles.main}>
       <div className={styles.header}>
-        {/* <h2 className={styles.title}>StatCrusher</h2> */}
         <button
           onClick={() => setOpen(true)}
           className={conc(styles.buttonIcon, styles.listIcon)}>
@@ -157,6 +157,15 @@ export default function Home(): JSX.Element {
             </g>
           </svg>
         </button>
+        <div className={styles.dcLinksContainer}>
+          <a className={styles.dcLogoLink} href={'https://devoncorp.press/'}>
+            <Image src={'/devoncorp-inverted.png'} alt={'DevonCorp'} width={120} height={36}></Image>
+          </a>
+          <a className={styles.dcLink} href={'https://devoncorp.press/'}>Home</a>
+          <a className={styles.dcLink} href={'https://devoncorp.press/about'}>About Us</a>
+          <a className={styles.dcLink} href={'https://devoncorp.press/short-form-content/up-to-date-vgc-resources'}>Resources</a>
+          <a className={styles.dcLink} href={'https://devoncorp.press/long-form-content'}>Articles</a>
+        </div>
         <div className={styles.socialLinks}>
           <a
             title={'Twitter'}
@@ -206,7 +215,7 @@ export default function Home(): JSX.Element {
             onClick={() => setOpen(false)}
             className={conc(styles.buttonIcon, styles.listClose)}>
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" />
+              <path fillRule="evenodd" d="M22 12C22 17.5228 17.5228 22 12 22C6.47715 22 2 17.5228 2 12C2 6.47715 6.47715 2 12 2C17.5228 2 22 6.47715 22 12ZM8.96963 8.96965C9.26252 8.67676 9.73739 8.67676 10.0303 8.96965L12 10.9393L13.9696 8.96967C14.2625 8.67678 14.7374 8.67678 15.0303 8.96967C15.3232 9.26256 15.3232 9.73744 15.0303 10.0303L13.0606 12L15.0303 13.9696C15.3232 14.2625 15.3232 14.7374 15.0303 15.0303C14.7374 15.3232 14.2625 15.3232 13.9696 15.0303L12 13.0607L10.0303 15.0303C9.73742 15.3232 9.26254 15.3232 8.96965 15.0303C8.67676 14.7374 8.67676 14.2625 8.96965 13.9697L10.9393 12L8.96963 10.0303C8.67673 9.73742 8.67673 9.26254 8.96963 8.96965Z" />
             </svg>
           </button>
         </div>

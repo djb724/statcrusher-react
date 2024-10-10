@@ -1,7 +1,7 @@
 .main {
   display: grid;
   grid-template-columns: 350px auto;
-  grid-template-rows: 30px auto;
+  grid-template-rows: 35px auto;
   height: 100vh;
   width: 100vw;
 }
@@ -12,6 +12,8 @@
   grid-row-start: 1;
   grid-row-end: 1;
   border-bottom: var(--line-dark) 1px solid;
+  display: flex;
+  flex-direction: row;
 }
 
 .listIcon {
@@ -28,6 +30,33 @@
   display: block;
   float: right;
   z-index: 1;
+}
+
+.dcLinksContainer {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  height: 100%;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-left: 84px;
+}
+
+.dcLogoLink {
+  height: 35px;
+  padding: 0px 8px;
+}
+
+.dcLink {
+  padding: 2px 10px;
+  display: block;
+  border-left: 1px solid var(--fg-dark-2);
+}
+
+.dcLink:hover {
+  color: var(--hilight);
 }
 
 .socialLinks {
@@ -59,10 +88,6 @@
   display: none;
 }
 
-.coverOpen {
-  display: block;
-}
-
 .title {
   margin: 15px;
   color: var(--fg-dark-2);
@@ -71,11 +96,11 @@
 
 .buttonIcon {
   cursor: pointer;
-  height: 26px;
-  width: 26px;
+  height: 29px;
+  width: 29px;
   fill: var(--fg-dark-2);
   color: var(--fg-dark-2);
-  margin: 2px 5px;
+  margin: 3px 6px;
   border: none;
   background: transparent;
 }
@@ -150,19 +175,22 @@
   }
 
   .buttonIcon {
-    height: 36px;
-    width: 36px;
-    margin: 7px;
+    height: 50px;
+    width: 50px;
+    padding: 7px;
+    margin: 0px;
   }
-}
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-  .main {
-    display: grid;
-    grid-template-columns: 350px auto;
-    grid-template-rows: 30px auto;
-    height: 100vh;
-    width: 100vw;  
+
+  .coverOpen {
+    display: block;
+  }  
+
+  .dcLinksContainer {
+    margin-left: 50px;
+  }
+
+  .dcLink {
+    display: none;
   }
 }
 
