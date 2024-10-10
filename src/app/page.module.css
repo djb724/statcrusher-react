@@ -49,6 +49,16 @@
   padding: 0px 8px;
 }
 
+.dcLogoLinkMobile {
+  display: none;
+}
+
+.dcLinks {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
 .dcLink {
   padding: 2px 10px;
   display: block;
@@ -57,6 +67,10 @@
 
 .dcLink:hover {
   color: var(--hilight);
+}
+
+.dcLinkContainerMobile {
+  display: none;
 }
 
 .socialLinks {
@@ -186,12 +200,25 @@
   }  
 
   .dcLinksContainer {
-    margin-left: 50px;
+    margin-left: 12px;
+    font-size: 10px;
   }
 
-  .dcLink {
+  .dcLogoLink {
     display: none;
   }
+
+  .dcLogoLinkMobile {
+    display: block;
+    padding: 0px 5px;
+  }
+  
+  .dcLink {
+    padding: 0px 6px;
+    margin: 1px;
+    display: block;
+    border-left: 1px solid var(--fg-dark-2);
+  }  
 }
 
 @media (prefers-color-scheme: dark) {

@@ -161,10 +161,28 @@ export default function Home(): JSX.Element {
           <a className={styles.dcLogoLink} href={'https://devoncorp.press/'}>
             <Image src={'/devoncorp-inverted.png'} alt={'DevonCorp'} width={120} height={36}></Image>
           </a>
-          <a className={styles.dcLink} href={'https://devoncorp.press/'}>Home</a>
-          <a className={styles.dcLink} href={'https://devoncorp.press/about'}>About Us</a>
-          <a className={styles.dcLink} href={'https://devoncorp.press/short-form-content/up-to-date-vgc-resources'}>Resources</a>
-          <a className={styles.dcLink} href={'https://devoncorp.press/long-form-content'}>Articles</a>
+          <a className={styles.dcLogoLinkMobile} href={'https://devoncorp.press/'}>
+            <Image src={'/dc.png'} alt={'DevonCorp'} width={50} height={50} />
+          </a>
+          <ul className={styles.dcLinks}>
+            <li className={styles.dcLink}>
+              <a href={'https://devoncorp.press/'}>Home</a>
+            </li>
+            <li className={styles.dcLink}>
+              <a href={'https://devoncorp.press/about'}>About Us</a>
+            </li>
+            <li className={styles.dcLink}>
+              <a href={'https://devoncorp.press/short-form-content/up-to-date-vgc-resources'}>Resources</a>
+            </li>
+            <li className={styles.dcLink}>
+              <a href={'https://devoncorp.press/long-form-content'}>Articles</a>
+            </li>
+          </ul>
+        </div>
+        <div className={styles.dcLinkContainerMobile}>
+          <a href={'https://devoncorp.press/'}>
+            <Image src={'/dc.png'} alt={'DevonCorp'} width={50} height={50} />
+          </a>
         </div>
         <div className={styles.socialLinks}>
           <a
