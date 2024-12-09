@@ -40,7 +40,7 @@ const defaultParams: types.PathParams = {
   format: 'gen9vgc2024reghbo3',
   month: '2024-11',
 }
-const showRestrictedFilter = true;
+const showRestrictedFilter = false; // set to true during restricted formats
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
   {
