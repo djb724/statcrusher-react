@@ -35,10 +35,11 @@ function AggregateListItem({ selected, onSelect }: {
   </div>)
 }
 
-export default function PokemonList({ data, status, restrictedFilter, selectedPokemon, onSelectedPokemonChange }: {
+export default function PokemonList({ data, status, restrictedFilter, searchFilter, selectedPokemon, onSelectedPokemonChange }: {
   data: UsageData[],
   status: Status,
-  restrictedFilter: RestrictedFilter
+  restrictedFilter: RestrictedFilter,
+  searchFilter: string,
   selectedPokemon?: string,
   onSelectedPokemonChange: Function
 }) {
@@ -50,6 +51,9 @@ export default function PokemonList({ data, status, restrictedFilter, selectedPo
   }
   else if (restrictedFilter === RestrictedFilter.nonrestricted) {
     data = data.filter(p => !p.isRestricted);
+  }
+  if (searchFilter) {
+    data = data.filter(p => p.name.toLowerCase().includes(searchFilter.toLowerCase()))
   }
   let elementList = data.map(ud => {
     let s = selectedPokemon === ud.name;

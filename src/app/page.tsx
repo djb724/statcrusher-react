@@ -7,7 +7,7 @@ import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
 import { conc } from './util';
-import { SelectorButtonRow, Dropdown } from "./components";
+import { SelectorButtonRow, Dropdown, SearchBar } from "./components";
 import Image from "next/image";
 
 const elos: types.ButtonOption[] = [
@@ -40,15 +40,15 @@ const defaultParams: types.PathParams = {
   format: 'gen9vgc2024reghbo3',
   month: '2024-11',
 }
-const showRestrictedFilter = false;
+const showRestrictedFilter = true;
 
-function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange }:
+function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
   {
     params: types.PathParams, onParamsChange: (params: types.PathParams) => void,
-    restrictedFilter: types.RestrictedFilter, onRestrictedFilterChange: (selected: string) => void
+    restrictedFilter: types.RestrictedFilter, onRestrictedFilterChange: (selected: string) => void,
+    searchFilter: string, onSearchFilterChange: (searchFilter: string) => void
   }
 ) {
-
   return <div>
     <SelectorButtonRow
       options={elos}
@@ -68,6 +68,7 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
       options={filterOptions}
       selected={restrictedFilter}
       onSelectedChange={onRestrictedFilterChange} />}
+    <SearchBar value={searchFilter} onValueChange={onSearchFilterChange} />
   </div>
 }
 
@@ -79,7 +80,8 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
     [types.RestrictedFilter, Function] = useState(types.RestrictedFilter.all)
 
   let [usage, setUsage]: [types.UsageData[], Function] = useState([]);
-  let [status, setStatus]: [types.Status, Function] = useState(types.Status.inProgress)
+  let [status, setStatus]: [types.Status, Function] = useState(types.Status.inProgress);
+  let [searchFilter, setSearchFilter] = useState('');
 
   useEffect(() => {
     setStatus(types.Status.inProgress)
@@ -99,13 +101,16 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
           params={params}
           onParamsChange={onParamsChange}
           restrictedFilter={restrictedFilter}
-          onRestrictedFilterChange={(s) => setRestrictedFilter(s)} />
+          onRestrictedFilterChange={(s) => setRestrictedFilter(s)}
+          searchFilter={searchFilter}
+          onSearchFilterChange={(sf: string) => setSearchFilter(sf)} />
       </div>
       <div></div>
       <PokemonList
         data={usage}
         status={status}
         restrictedFilter={restrictedFilter}
+        searchFilter={searchFilter}
         selectedPokemon={selectedPokemon}
         onSelectedPokemonChange={onSelectedPokemonChange} />
     </div>
