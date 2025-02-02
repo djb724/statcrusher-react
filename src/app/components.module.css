@@ -37,19 +37,19 @@
 }
 
 .button:hover {
-  background-color: var(--hilight);
+  background-color: var(--hilight-2);
   color: var(--fg-dark)
 }
 
 .buttonSelected {
-  background-color: white;
+  background-color: var(--hilight-3);
   border-color: var(--hilight);
   color: var(--hilight);
 }
 
 .selectorRow {
   text-align: center;
-  margin: 8px 4px;
+  padding: 8px 4px;
 }
 
 .dropdown {
@@ -61,16 +61,19 @@
   padding-block: 0px;
   border-radius: 9px;
   border: 2px solid var(--hilight);
-  margin: 8px 0px;
+  margin-top: 8px;
   background-color: var(--bg-dark-2);
   color: var(--fg-dark);
   cursor: pointer;
 }
 
-.dropdown:hover,
-.dropdown:focus {
-  background-color: var(--hilight);
+.dropdown:hover {
+  background-color: var(--hilight-2);
   color: white;
+}
+
+.dropdown:focus {
+  background-color: var(--bg-dark-2);
 }
 
 .searchBarContainer {
@@ -110,8 +113,8 @@
   color: var(--fg-dark-2);
   stroke: var(--fg-dark-2);
   border: none;
-  top: 13px;
-  left: 26px;
+  top: 12px;
+  left: 25px;
 }
 
 .searchBarClose {

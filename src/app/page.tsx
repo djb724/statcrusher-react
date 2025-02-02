@@ -17,18 +17,21 @@ const elos: types.ButtonOption[] = [
   { name: '1760+', value: 1760 }
 ]
 const formats: types.ButtonOption[] = [
-  { name: 'Bo1', value: 'gen9vgc2024regh' },
-  { name: 'Bo3', value: 'gen9vgc2024reghbo3' }
+  { name: 'Bo1', value: 'gen9vgc2024regg' },
+  { name: 'Bo3', value: 'gen9vgc2024reggbo3' }
 ]
 const months: types.ButtonOption[] = [
-  { name: '2024-11', value: '2024-11' },
-  { name: '2024-10', value: '2024-10' },
-  { name: '2024-09', value: '2024-09' },
-  { name: '2024-08', value: '2024-08' }
-  // { name: '2024-07', value: '2024-07' },
-  // { name: '2024-06', value: '2024-06' },
-  // { name: '2024-05', value: '2024-05' },
-  // { name: '2024-04', value: '2024-04' }
+  // { name: '2024-11', value: '2024-11' },
+  // { name: '2024-10', value: '2024-10' },
+  // { name: '2024-09', value: '2024-09' },
+  // { name: '2024-08', value: '2024-08' }
+  { name: '2025-01', value: '2025-01' },
+  { name: '2024-12', value: '2024-12' },
+  { name: '2024-08', value: '2024-08' },
+  { name: '2024-07', value: '2024-07' },
+  { name: '2024-06', value: '2024-06' },
+  { name: '2024-05', value: '2024-05' },
+  { name: '2024-04', value: '2024-04' }
 ]
 const filterOptions: types.ButtonOption[] = [
   { name: 'All', value: types.RestrictedFilter.all },
@@ -37,10 +40,10 @@ const filterOptions: types.ButtonOption[] = [
 ]
 const defaultParams: types.PathParams = {
   elo: 0,
-  format: 'gen9vgc2024reghbo3',
-  month: '2024-11',
+  format: 'gen9vgc2024reggbo3',
+  month: '2025-01',
 }
-const showRestrictedFilter = false; // set to true during restricted formats
+const showRestrictedFilter = true; // set to true during restricted formats
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
   {
@@ -49,7 +52,7 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
     searchFilter: string, onSearchFilterChange: (searchFilter: string) => void
   }
 ) {
-  return <div>
+  return <div className={"panelContainer"}>
     <SelectorButtonRow
       options={elos}
       selected={params.elo}
@@ -211,9 +214,10 @@ export default function Home(): JSX.Element {
       </div>
       <div className={conc(styles.sideDisplayContainer, styles.scrollable)}>
         <div className={styles.title}>
-          <h1>
-            StatCrusher
-          </h1>
+          <Image src={"/statcrusher-logo.png"} 
+            alt={"StatCrusher.com"} 
+            width={281}
+            height={152}/>
         </div>
         <SidePanel
           params={params}
