@@ -13,8 +13,9 @@ const url = 'https://b8wasaivpe.execute-api.us-east-2.amazonaws.com/beta';
 
 export async function getPokemonData(params: PathParams, species: string): Promise<PokemonData[]> {
 
-  let {elo, format, month} = params;
-  let path = `/stats/${month}/${format}/${elo}/${species}`;
+  let {elo, month, bestOf} = params;
+  const [mon, format] = month.split(':');
+  let path = `/stats/${mon}/${format}${bestOf}/${elo}/${species}`;
   return axios.get(url + path)
   .then((res) => {
     if (res.status !== 200) {
@@ -27,8 +28,9 @@ export async function getPokemonData(params: PathParams, species: string): Promi
 
 export async function getUsageData(params: PathParams): Promise<UsageData[]> {
 
-  let {elo, format, month} = params;
-  let path = `/usage/${month}/${format}/${elo}`;
+  let {elo, month, bestOf} = params;
+  const [mon, format] = month.split(':');
+  let path = `/usage/${mon}/${format}${bestOf}/${elo}`;
   return axios.get(url + path)
   .then((res) => {
     if (res.status !== 200) {

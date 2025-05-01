@@ -16,22 +16,28 @@ const elos: types.ButtonOption[] = [
   { name: '1630+', value: 1630 },
   { name: '1760+', value: 1760 }
 ]
-const formats: types.ButtonOption[] = [
-  { name: 'Bo1', value: 'gen9vgc2024regg' },
-  { name: 'Bo3', value: 'gen9vgc2024reggbo3' }
+const bestOf: types.ButtonOption[] = [
+  { name: 'Bo1', value: '' },
+  { name: 'Bo3', value: 'bo3' }
 ]
 const months: types.ButtonOption[] = [
   // { name: '2024-11', value: '2024-11' },
   // { name: '2024-10', value: '2024-10' },
   // { name: '2024-09', value: '2024-09' },
-  // { name: '2024-08', value: '2024-08' }
-  { name: '2025-01', value: '2025-01' },
-  { name: '2024-12', value: '2024-12' },
-  { name: '2024-08', value: '2024-08' },
-  { name: '2024-07', value: '2024-07' },
-  { name: '2024-06', value: '2024-06' },
-  { name: '2024-05', value: '2024-05' },
-  { name: '2024-04', value: '2024-04' }
+  // { name: '2024-08', value: '2024-08' },
+
+  { name: 'Reg I 2025-04', value: '2025-04:gen9vgc2025regi' },
+
+  { name: 'Reg G 2025-04', value: '2025-04:gen9vgc2024regg' },
+  { name: 'Reg G 2025-03', value: '2025-03:gen9vgc2024regg' },
+  { name: 'Reg G 2025-02', value: '2025-02:gen9vgc2024regg' },
+  { name: 'Reg G 2025-01', value: '2025-01:gen9vgc2024regg' },
+  { name: 'Reg G 2024-12', value: '2024-12:gen9vgc2024regg' },
+  { name: 'Reg G 2024-08', value: '2024-08:gen9vgc2024regg' },
+  { name: 'Reg G 2024-07', value: '2024-07:gen9vgc2024regg' },
+  { name: 'Reg G 2024-06', value: '2024-06:gen9vgc2024regg' },
+  { name: 'Reg G 2024-05', value: '2024-05:gen9vgc2024regg' },
+  { name: 'Reg G 2024-04', value: '2024-04:gen9vgc2024regg' },
 ]
 const filterOptions: types.ButtonOption[] = [
   { name: 'All', value: types.RestrictedFilter.all },
@@ -40,8 +46,8 @@ const filterOptions: types.ButtonOption[] = [
 ]
 const defaultParams: types.PathParams = {
   elo: 0,
-  format: 'gen9vgc2024reggbo3',
-  month: '2025-01',
+  bestOf: 'bo3',
+  month: '2025-04:gen9vgc2025regi',
 }
 const showRestrictedFilter = true; // set to true during restricted formats
 
@@ -59,13 +65,13 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
       onSelectedChange={(elo: string | number) => onParamsChange({ ...params, elo: elo as number })} />
     <div className={styles.flexRow}>
       <SelectorButtonRow
-        options={formats}
-        selected={params.format}
-        onSelectedChange={(format: string | number) => onParamsChange({ ...params, format: format as string })} />
+        options={bestOf}
+        selected={params.bestOf}
+        onSelectedChange={(bestOf: string) => onParamsChange({ ...params, bestOf })} />
       <Dropdown
         options={months}
         selected={params.month}
-        onSelectedChange={(month: string) => onParamsChange({ ...params, month: month })} />
+        onSelectedChange={(month: string) => onParamsChange({ ...params, month })} />
     </div>
     {showRestrictedFilter && <SelectorButtonRow
       options={filterOptions}
@@ -214,10 +220,10 @@ export default function Home(): JSX.Element {
       </div>
       <div className={conc(styles.sideDisplayContainer, styles.scrollable)}>
         <div className={styles.title}>
-          <Image src={"/statcrusher-logo.png"} 
-            alt={"StatCrusher.com"} 
+          <Image src={"/statcrusher-logo.png"}
+            alt={"StatCrusher.com"}
             width={281}
-            height={152}/>
+            height={152} />
         </div>
         <SidePanel
           params={params}
