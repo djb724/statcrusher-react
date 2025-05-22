@@ -2,6 +2,7 @@ import {RestrictedFilter, UsageData, Status} from './types';
 import Image from 'next/image';
 import styles from './pokemon-list.module.css'
 import { percent, conc } from "./util";
+import { Loading } from './components';
 
 function PokemonListItem({ data, selected, onSelect }: {
   data: UsageData, selected: boolean, onSelect: () => void
@@ -43,7 +44,7 @@ export default function PokemonList({ data, status, restrictedFilter, searchFilt
   selectedPokemon?: string,
   onSelectedPokemonChange: Function
 }) {
-  if (status === Status.inProgress) return <div>loading...</div>
+  if (status === Status.inProgress) return <Loading />
   if (status === Status.error) return <div>error</div>
 
   if (restrictedFilter === RestrictedFilter.restricted) {

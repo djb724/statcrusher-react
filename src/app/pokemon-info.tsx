@@ -6,7 +6,7 @@ import { Chart, ChartData, registerables, TooltipItem } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import Image from "next/image";
 import { getPokemonData } from "./api";
-import { ErrorComponent, LoadingComponent, TextBox, Button } from "./components";
+import { ErrorComponent, Loading, TextBox, Button } from "./components";
 
 Chart.register(...registerables);
 
@@ -576,9 +576,9 @@ export function InfoDisplay({ params, selectedPokemon }: {
         console.error(err);
         setStatus(Status.error);
       })
-  }, [params, selectedPokemon])
+  }, [params.bestOf, params.elo, params.month, selectedPokemon])
 
-  if (status === Status.inProgress) return <LoadingComponent />
+  if (status === Status.inProgress) return <Loading />
   if (status === Status.error) return <ErrorComponent />
 
   if (selectedPokemon === 'Metagame') 

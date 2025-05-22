@@ -105,7 +105,7 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
         if (!selectedPokemon) onSelectedPokemonChange(data[0].name);
       })
       .catch(() => setStatus(types.Status.error));
-  }, [params])
+  }, [params.bestOf, params.elo, params.month])
 
   return (
     <div>

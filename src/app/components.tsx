@@ -1,6 +1,7 @@
 import styles from "./components.module.css";
 import { ButtonOption } from "./types";
 import { conc } from "./util";
+import Image from 'next/image';
 
 export function LoadingComponent(): JSX.Element {
   return <div></div>
@@ -94,5 +95,27 @@ export function SearchBar({ value, onValueChange }: {
     </button>
   </div>
 
+}
+
+export function Loading() {
+  return <div className={styles.loadingContainer}>
+    <div className={styles.loading}>
+      <Image className={styles.bounce1}
+        src={"/beldum-loading.png"}
+        alt=""
+        width={64}
+        height={64} />
+      <Image className={styles.bounce2}
+        src={"/beldum-loading.png"}
+        alt=""
+        width={64}
+        height={64} />
+      <Image className={styles.bounce3}
+        src={"/beldum-loading.png"}
+        alt=""
+        width={64}
+        height={64} />
+    </div>
+  </div>
 }
 
