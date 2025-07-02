@@ -30,6 +30,8 @@ const months: types.ButtonOption[] = [
   // { name: '2024-09', value: '2024-09' },
   // { name: '2024-08', value: '2024-08' },
 
+  { name: 'Reg I 2025-06', value: '2025-05:gen9vgc2025regi' },
+  { name: 'Reg I 2025-05', value: '2025-05:gen9vgc2025regi' },
   { name: 'Reg I 2025-04', value: '2025-04:gen9vgc2025regi' },
 
   { name: 'Reg G 2025-04', value: '2025-04:gen9vgc2024regg' },
@@ -51,7 +53,7 @@ const filterOptions: types.ButtonOption[] = [
 const defaultParams: types.PathParams = {
   elo: 0,
   bestOf: 'bo3',
-  month: '2025-04:gen9vgc2025regi',
+  month: '2025-06:gen9vgc2025regi',
 }
 const showRestrictedFilter = true; // set to true during restricted formats
 
