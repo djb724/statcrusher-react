@@ -5,7 +5,7 @@ import { useState, useEffect, DO_NOT_USE_OR_YOU_WILL_BE_FIRED_EXPERIMENTAL_FORM_
 import { Chart, ChartData, registerables, TooltipItem } from "chart.js";
 import { Bar } from "react-chartjs-2";
 import Image from "next/image";
-import { getPokemonData } from "./api";
+import { getPokemonData, useStats } from "./api";
 import { ErrorComponent, Loading, TextBox, Button } from "./components";
 
 Chart.register(...registerables);
@@ -553,30 +553,7 @@ export function InfoDisplay({ params, selectedPokemon }: {
   params: PathParams,
   selectedPokemon: string
 }): JSX.Element {
-
-  let [status, setStatus]: [Status, Function] = useState(Status.inProgress)
-  let [pokemonData, setPokemonData]: [PokemonData | undefined, Function] = useState();
-  let [aggregateData, setAggregateData]: [AggregateData | undefined, Function] = useState();
-
-  useEffect(() => {
-    if (!selectedPokemon) return;
-    setStatus(Status.inProgress);
-    getPokemonData(params, selectedPokemon)
-      .then((data) => {
-        if (selectedPokemon === 'Metagame') {
-          setAggregateData(data);
-          setStatus(Status.complete);
-        }
-        else {
-          setPokemonData(data);
-          setStatus(Status.complete);
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-        setStatus(Status.error);
-      })
-  }, [params.bestOf, params.elo, params.month, selectedPokemon])
+  let [status, pokemonData, aggregateData] = useStats(params, selectedPokemon)
 
   if (status === Status.inProgress) return <Loading />
   if (status === Status.error) return <ErrorComponent />

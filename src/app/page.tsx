@@ -2,7 +2,7 @@
 
 import styles from "./page.module.css";
 import * as types from './types';
-import { getUsageData } from './api';
+import { useUsageData } from './api';
 import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
@@ -10,7 +10,7 @@ import { conc } from './util';
 import { SelectorButtonRow, Dropdown, SearchBar } from "./components";
 import Image from "next/image";
 import posthog from 'posthog-js';
-import {PostHogProvider} from 'posthog-js/react';
+import { PostHogProvider } from 'posthog-js/react';
 import Router from 'next/router';
 
 
@@ -30,7 +30,8 @@ const months: types.ButtonOption[] = [
   // { name: '2024-09', value: '2024-09' },
   // { name: '2024-08', value: '2024-08' },
 
-  { name: 'Reg I 2025-06', value: '2025-05:gen9vgc2025regi' },
+  { name: 'Reg I 2025-07', value: '2025-07:gen9vgc2025regi' },
+  { name: 'Reg I 2025-06', value: '2025-06:gen9vgc2025regi' },
   { name: 'Reg I 2025-05', value: '2025-05:gen9vgc2025regi' },
   { name: 'Reg I 2025-04', value: '2025-04:gen9vgc2025regi' },
 
@@ -53,7 +54,7 @@ const filterOptions: types.ButtonOption[] = [
 const defaultParams: types.PathParams = {
   elo: 0,
   bestOf: 'bo3',
-  month: '2025-06:gen9vgc2025regi',
+  month: '2025-07:gen9vgc2025regi',
 }
 const showRestrictedFilter = true; // set to true during restricted formats
 
@@ -94,20 +95,19 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
   let [restrictedFilter, setRestrictedFilter]:
     [types.RestrictedFilter, Function] = useState(types.RestrictedFilter.all)
 
-  let [usage, setUsage]: [types.UsageData[], Function] = useState([]);
-  let [status, setStatus]: [types.Status, Function] = useState(types.Status.inProgress);
   let [searchFilter, setSearchFilter] = useState('');
 
-  useEffect(() => {
-    setStatus(types.Status.inProgress)
-    getUsageData(params)
-      .then(data => {
-        setUsage(data);
-        setStatus(types.Status.complete)
-        if (!selectedPokemon) onSelectedPokemonChange(data[0].name);
-      })
-      .catch(() => setStatus(types.Status.error));
-  }, [params.bestOf, params.elo, params.month])
+  // useEffect(() => {
+  //   setStatus(types.Status.inProgress)
+  //   getUsageData(params)
+  //     .then(data => {
+  //       setUsage(data);
+  //       setStatus(types.Status.complete)
+  //       if (!selectedPokemon) onSelectedPokemonChange(data[0].name);
+  //     })
+  //     .catch(() => setStatus(types.Status.error));
+  // }, [params.bestOf, params.elo, params.month])
+  let [status, usage] = useUsageData(params);
 
   return (
     <div>
