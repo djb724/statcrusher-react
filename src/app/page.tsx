@@ -25,10 +25,11 @@ const bestOf: types.ButtonOption[] = [
   { name: 'Bo3', value: 'bo3' }
 ]
 const months: types.ButtonOption[] = [
-  // { name: '2024-11', value: '2024-11' },
-  // { name: '2024-10', value: '2024-10' },
-  // { name: '2024-09', value: '2024-09' },
-  // { name: '2024-08', value: '2024-08' },
+  { name: 'Reg H 2024-12', value: '2024-12:gen8vgc2025regh' },
+  { name: 'Reg H 2024-11', value: '2024-11:gen8vgc2025regh' },
+  { name: 'Reg H 2024-10', value: '2024-10:gen8vgc2025regh' },
+  { name: 'Reg H 2024-09', value: '2024-09:gen8vgc2025regh' },
+  { name: 'Reg H 2024-08', value: '2024-08:gen8vgc2025regh' },
 
   { name: 'Reg I 2025-07', value: '2025-07:gen9vgc2025regi' },
   { name: 'Reg I 2025-06', value: '2025-06:gen9vgc2025regi' },
