@@ -20,16 +20,19 @@ const elos: types.ButtonOption[] = [
   { name: '1630+', value: 1630 },
   { name: '1760+', value: 1760 }
 ]
+
 const bestOf: types.ButtonOption[] = [
   { name: 'Bo1', value: '' },
   { name: 'Bo3', value: 'bo3' }
 ]
+
 const months: types.ButtonOption[] = [
-  { name: 'Reg H 2024-12', value: '2024-12:gen8vgc2025regh' },
-  { name: 'Reg H 2024-11', value: '2024-11:gen8vgc2025regh' },
-  { name: 'Reg H 2024-10', value: '2024-10:gen8vgc2025regh' },
-  { name: 'Reg H 2024-09', value: '2024-09:gen8vgc2025regh' },
-  { name: 'Reg H 2024-08', value: '2024-08:gen8vgc2025regh' },
+  { name: 'Reg H 2025-08', value: '2025-08:gen9vgc2025regh' },
+  { name: 'Reg H 2024-12', value: '2024-12:gen9vgc2024regh' },
+  { name: 'Reg H 2024-11', value: '2024-11:gen9vgc2024regh' },
+  { name: 'Reg H 2024-10', value: '2024-10:gen9vgc2024regh' },
+  { name: 'Reg H 2024-09', value: '2024-09:gen9vgc2024regh' },
+  { name: 'Reg H 2024-08', value: '2024-08:gen9vgc2024regh' },
 
   { name: 'Reg I 2025-07', value: '2025-07:gen9vgc2025regi' },
   { name: 'Reg I 2025-06', value: '2025-06:gen9vgc2025regi' },
@@ -47,16 +50,19 @@ const months: types.ButtonOption[] = [
   { name: 'Reg G 2024-05', value: '2024-05:gen9vgc2024regg' },
   { name: 'Reg G 2024-04', value: '2024-04:gen9vgc2024regg' },
 ]
+
 const filterOptions: types.ButtonOption[] = [
   { name: 'All', value: types.RestrictedFilter.all },
   { name: 'Restricted', value: types.RestrictedFilter.restricted },
   { name: 'Non-Restricted', value: types.RestrictedFilter.nonrestricted }
 ]
+
 const defaultParams: types.PathParams = {
   elo: 0,
   bestOf: 'bo3',
-  month: '2025-07:gen9vgc2025regi',
+  month: '2024-12:gen9vgc2024regh',
 }
+
 const showRestrictedFilter = true; // set to true during restricted formats
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
