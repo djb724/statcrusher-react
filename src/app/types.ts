@@ -12,6 +12,7 @@ export type ButtonOption = {
 
 export type PathParams = {
   elo: number,
+  format: string,
   month: string,
   bestOf: string
 }

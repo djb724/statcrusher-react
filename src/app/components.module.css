@@ -48,23 +48,31 @@
 }
 
 .selectorRow {
-  text-align: center;
-  padding: 8px 4px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.dropdownContainer {
+  position: relative;
+  font-size: 16px;
+  z-index: 1;
 }
 
 .dropdown {
-  height: 22px;
-  font-size: 16px;
-  line-height: 16px;
   font: inherit;
-  padding-inline: 9px;
-  padding-block: 0px;
+  height: 22px;
+  padding: 0px 7px;
   border-radius: 9px;
   border: 2px solid var(--hilight);
-  margin-top: 8px;
   background-color: var(--bg-dark-2);
   color: var(--fg-dark);
   cursor: pointer;
+  display: inline-block;
+  line-height: 18px;
+  min-width: 90px;
 }
 
 .dropdown:hover {
@@ -74,6 +82,40 @@
 
 .dropdown:focus {
   background-color: var(--bg-dark-2);
+}
+
+.dropdownOptionList {
+  position: absolute;
+  top: 24px;
+  border-radius: 9px;
+  border: 2px solid var(--hilight);
+  min-width: 90px;
+  max-height: 480px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+
+  overflow-y: auto;
+  scrollbar-color: var(--fg-dark-2) transparent;
+  scrollbar-width: none;
+}
+
+.dropdownOption {
+  background-color: var(--bg-dark-2);
+  color: var(--fg-dark);
+  padding: 2px 7px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.dropdownOption:hover {
+  background-color: var(--hilight-2);
+  color: var(--fg-dark);
+}
+
+.dropdownOptionSelected {
+  background-color: var(--hilight-3);
+  border-color: var(--hilight);
+  color: var(--hilight);
 }
 
 .searchBarContainer {
@@ -113,7 +155,7 @@
   color: var(--fg-dark-2);
   stroke: var(--fg-dark-2);
   border: none;
-  top: 12px;
+  top: 14px;
   left: 25px;
 }
 
@@ -127,7 +169,7 @@
   color: var(--fg-dark-2);
   fill: var(--fg-dark-2);
   right: 23px;
-  top: 11px;
+  top: 13px;
 }
 
 .searchBarClose:hover {

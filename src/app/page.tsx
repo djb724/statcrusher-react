@@ -7,7 +7,7 @@ import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
 import { conc } from './util';
-import { SelectorButtonRow, Dropdown, SearchBar } from "./components";
+import { SelectorButtonRow, CustomDropdown, SearchBar } from "./components";
 import Image from "next/image";
 import posthog from 'posthog-js';
 import { PostHogProvider } from 'posthog-js/react';
@@ -26,31 +26,50 @@ const bestOf: types.ButtonOption[] = [
   { name: 'Bo3', value: 'bo3' }
 ]
 
-const months: types.ButtonOption[] = [
-  { name: 'Reg H 2025-09', value: '2025-09:gen9vgc2024regh' },
-  { name: 'Reg H 2025-08', value: '2025-08:gen9vgc2024regh' },
-  { name: 'Reg H 2024-12', value: '2024-12:gen9vgc2024regh' },
-  { name: 'Reg H 2024-11', value: '2024-11:gen9vgc2024regh' },
-  { name: 'Reg H 2024-10', value: '2024-10:gen9vgc2024regh' },
-  { name: 'Reg H 2024-09', value: '2024-09:gen9vgc2024regh' },
-  { name: 'Reg H 2024-08', value: '2024-08:gen9vgc2024regh' },
-
-  { name: 'Reg I 2025-07', value: '2025-07:gen9vgc2025regi' },
-  { name: 'Reg I 2025-06', value: '2025-06:gen9vgc2025regi' },
-  { name: 'Reg I 2025-05', value: '2025-05:gen9vgc2025regi' },
-  { name: 'Reg I 2025-04', value: '2025-04:gen9vgc2025regi' },
-
-  { name: 'Reg G 2025-04', value: '2025-04:gen9vgc2024regg' },
-  { name: 'Reg G 2025-03', value: '2025-03:gen9vgc2024regg' },
-  { name: 'Reg G 2025-02', value: '2025-02:gen9vgc2024regg' },
-  { name: 'Reg G 2025-01', value: '2025-01:gen9vgc2024regg' },
-  { name: 'Reg G 2024-12', value: '2024-12:gen9vgc2024regg' },
-  { name: 'Reg G 2024-08', value: '2024-08:gen9vgc2024regg' },
-  { name: 'Reg G 2024-07', value: '2024-07:gen9vgc2024regg' },
-  { name: 'Reg G 2024-06', value: '2024-06:gen9vgc2024regg' },
-  { name: 'Reg G 2024-05', value: '2024-05:gen9vgc2024regg' },
-  { name: 'Reg G 2024-04', value: '2024-04:gen9vgc2024regg' },
+const formats: types.ButtonOption[] = [
+  { name: "Reg H", value: "gen9vgc2024regh" },
+  { name: "Reg F", value: "gen9vgc2024regf" },
+  { name: "Reg I", value: "gen9vgc2025regi" },
+  { name: "Reg G", value: "gen9vgc2024regg" },
 ]
+
+const formatMonths: {[format: string]: string[]} = {
+  "gen9vgc2024regh": [
+	'2025-10',
+	'2025-09',
+	'2025-08',
+	'2024-12',
+	'2024-11',
+	'2024-10',
+	'2024-09',
+	'2024-08'
+  ],
+  "gen9vgc2024regf": [
+	"2024-04",
+	"2024-03",
+	"2024-02",
+	"2024-01",
+	"2023-12",
+  ],
+  "gen9vgc2025regi": [
+	'2025-07',
+	'2025-06',
+	'2025-05',
+	'2025-04',
+  ],
+  "gen9vgc2024regg": [
+	'2025-04',
+	'2025-03',
+	'2025-02',
+	'2025-01',
+	'2024-12',
+	'2024-08',
+	'2024-07',
+	'2024-06',
+	'2024-05',
+	'2024-04',
+  ],
+}
 
 const filterOptions: types.ButtonOption[] = [
   { name: 'All', value: types.RestrictedFilter.all },
@@ -61,19 +80,37 @@ const filterOptions: types.ButtonOption[] = [
 const defaultParams: types.PathParams = {
   elo: 0,
   bestOf: 'bo3',
-  month: '2025-09:gen9vgc2024regh',
+  format: 'gen9vgc2024regh',
+  month: '2025-10',
 }
 
 const showRestrictedFilter = true; // set to true during restricted formats
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
   {
-    params: types.PathParams, onParamsChange: (params: types.PathParams) => void,
-    restrictedFilter: types.RestrictedFilter, onRestrictedFilterChange: (selected: string) => void,
-    searchFilter: string, onSearchFilterChange: (searchFilter: string) => void
+    params: types.PathParams,
+	onParamsChange: (params: types.PathParams) => void,
+    restrictedFilter: types.RestrictedFilter,
+	onRestrictedFilterChange: (selected: string) => void,
+    searchFilter: string,
+	onSearchFilterChange: (searchFilter: string) => void
   }
 ) {
-  return <div className={"panelContainer"}>
+  console.log(params)
+  let monthOptions: types.ButtonOption[] = [];
+  if (formatMonths[params.format]) {
+	monthOptions = formatMonths[params.format].map(m => ({
+	  name: m,
+	  value: m
+	}));
+  }
+
+  function handleFormatChange(format: string) {
+	const month = formatMonths[format][0];
+	onParamsChange({ ...params, format, month });
+  }
+
+  return <div className={styles.panelContainer}>
     <SelectorButtonRow
       options={elos}
       selected={params.elo}
@@ -83,8 +120,12 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
         options={bestOf}
         selected={params.bestOf}
         onSelectedChange={(bestOf: string) => onParamsChange({ ...params, bestOf })} />
-      <Dropdown
-        options={months}
+      <CustomDropdown
+        options={formats}
+        selected={params.format}
+        onSelectedChange={handleFormatChange} />
+      <CustomDropdown
+        options={monthOptions}
         selected={params.month}
         onSelectedChange={(month: string) => onParamsChange({ ...params, month })} />
     </div>

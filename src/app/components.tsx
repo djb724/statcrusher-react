@@ -1,4 +1,5 @@
 import styles from "./components.module.css";
+import { useState } from "react"
 import { ButtonOption } from "./types";
 import { conc } from "./util";
 import Image from 'next/image';
@@ -73,6 +74,58 @@ export function Dropdown({ options, selected, onSelectedChange }: {
     {optionEls}
   </select>
 }
+
+export function DropdownOptions({ options, selected, onSelectedChange }: {
+  options: ButtonOption[], selected: string, onSelectedChange: Function
+}) {
+  let optionEls = options.map((option: ButtonOption) => {
+	return <div
+	  className={styles.dropdownOption}
+	  key={option.value}
+	  onClick={() => onSelectedChange(option.value)}
+	>{option.name}</div>
+  })
+  return <div className={styles.dropdownOptionsContainer}>
+  {optionEls}
+  </div>
+}
+
+export function CustomDropdown({ options, selected, onSelectedChange }: {
+  options: ButtonOption[], selected: string, onSelectedChange: Function
+}) {
+  let [showOptions, setShowOptions] = useState<boolean>(false);
+  function toggleDropdownOptions() {
+	setShowOptions(o => !o);
+  }
+
+  function handleOptionClick(value: any) {
+	onSelectedChange(value);
+	setShowOptions(false);
+  }
+
+  let opts = options.map(opt => {
+	const optStyle = conc(
+	  styles.dropdownOption,
+	  opt.value == selected ? styles.dropdownOptionSelected : ""
+	)
+	return <div 
+	  className={optStyle}
+	  onClick={() => handleOptionClick(opt.value)}>
+	  {opt.name}
+	</div>
+  })
+
+  return <div className={styles.dropdownContainer}>
+	<button className={styles.dropdown}
+	  onClick={toggleDropdownOptions}>
+	  {options.find(opt => opt.value == selected)?.name || "Invalid option"}
+	</button>
+	{showOptions && <div className={styles.dropdownOptionList}>
+	  {opts}
+	</div>}
+  </div>
+}
+
 
 export function SearchBar({ value, onValueChange }: {
   value: string, onValueChange: Function
