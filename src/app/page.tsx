@@ -84,8 +84,6 @@ const defaultParams: types.PathParams = {
   month: '2025-10',
 }
 
-const showRestrictedFilter = true; // set to true during restricted formats
-
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
   {
     params: types.PathParams,
@@ -96,6 +94,11 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
 	onSearchFilterChange: (searchFilter: string) => void
   }
 ) {
+  function handleFormatChange(format: string) {
+	const month = formatMonths[format][0];
+	onParamsChange({ ...params, format, month });
+  }
+
   let monthOptions: types.ButtonOption[] = [];
   if (formatMonths[params.format]) {
 	monthOptions = formatMonths[params.format].map(m => ({
@@ -103,11 +106,10 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
 	  value: m
 	}));
   }
-
-  function handleFormatChange(format: string) {
-	const month = formatMonths[format][0];
-	onParamsChange({ ...params, format, month });
-  }
+  const showRestrictedFilter = (
+	params.format == "gen9vgc2024regg" ||
+	params.format == "gen9vgc2025regi"
+  )
 
   return <div className={styles.panelContainer}>
     <SelectorButtonRow

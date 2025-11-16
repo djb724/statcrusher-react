@@ -31,7 +31,6 @@
   color: var(--fg-dark);
   cursor: pointer;
   display: inline-block;
-  margin-inline: 4px;
   min-width: 50px;
   line-height: 18px;
 }
@@ -119,11 +118,9 @@
 }
 
 .searchBarContainer {
-  width: auto;
+  width: 300px;
   position: relative;
-  padding-block: 8px;
-  padding-inline: 20px;
-  display: block;
+  display: inline-block;
 }
 
 .searchBar {
@@ -155,8 +152,8 @@
   color: var(--fg-dark-2);
   stroke: var(--fg-dark-2);
   border: none;
-  top: 14px;
-  left: 25px;
+  top: 6px;
+  left: 5px;
 }
 
 .searchBarClose {
@@ -168,8 +165,8 @@
   height: 16px;
   color: var(--fg-dark-2);
   fill: var(--fg-dark-2);
-  right: 23px;
-  top: 13px;
+  right: 5px;
+  top: 5px;
 }
 
 .searchBarClose:hover {
