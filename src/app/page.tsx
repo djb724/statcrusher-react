@@ -96,7 +96,6 @@ function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedF
 	onSearchFilterChange: (searchFilter: string) => void
   }
 ) {
-  console.log(params)
   let monthOptions: types.ButtonOption[] = [];
   if (formatMonths[params.format]) {
 	monthOptions = formatMonths[params.format].map(m => ({
