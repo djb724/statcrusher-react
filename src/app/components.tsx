@@ -1,5 +1,5 @@
 import styles from "./components.module.css";
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { ButtonOption } from "./types";
 import { conc } from "./util";
 import Image from 'next/image';
@@ -115,14 +115,29 @@ export function CustomDropdown({ options, selected, onSelectedChange }: {
 	</div>
   })
 
+  function DropdownOptionList({ options }: {
+	options: JSX.Element[]
+  }) {
+	useEffect(() => {
+	  // Hack to let the handleOptionClick event happens before the
+	  // element gets deleted
+	  let clickHandler = () => setTimeout(() => setShowOptions(false), 1);
+	  document.body.addEventListener("click", clickHandler);
+	  return () => {
+		document.body.removeEventListener("click", clickHandler);
+	  }
+	}, []);
+	return <div className={styles.dropdownOptionList}>
+	  {options}
+	</div>
+  }
+
   return <div className={styles.dropdownContainer}>
 	<button className={styles.dropdown}
 	  onClick={toggleDropdownOptions}>
 	  {options.find(opt => opt.value == selected)?.name || "Invalid option"}
 	</button>
-	{showOptions && <div className={styles.dropdownOptionList}>
-	  {opts}
-	</div>}
+	{showOptions && <DropdownOptionList options={opts} />}
   </div>
 }
 
