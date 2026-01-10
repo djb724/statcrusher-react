@@ -24,20 +24,23 @@ export function TextBox({ value, onValueChange }: {
     onClick={(e) => (e.target as HTMLInputElement).select()}></input>
 }
 
-export function Button({ selected = false, onClick, children }: {
+export function Button({ selected = false, onClick, onMouseEnter, children }: {
   selected?: boolean
   onClick: () => void,
+  onMouseEnter?: () => void,
   children: string
 }): JSX.Element {
   return <button
     className={conc(styles.button, selected ? styles.buttonSelected : '')}
-    onClick={onClick}>{children}</button>
+    onClick={onClick}
+    onMouseEnter={onMouseEnter}>{children}</button>
 }
 
-export function SelectorButtonRow({ options, selected, onSelectedChange }: {
+export function SelectorButtonRow({ options, selected, onSelectedChange, onOptionMouseEnter }: {
   options: ButtonOption[],
   selected: any,
-  onSelectedChange: (selected: string) => void
+  onSelectedChange: (selected: string) => void,
+  onOptionMouseEnter?: (option: ButtonOption) => void
 }) {
   let optionSelected = false;
 
@@ -47,6 +50,7 @@ export function SelectorButtonRow({ options, selected, onSelectedChange }: {
       <Button
         selected={selected === opt.value}
         onClick={() => onSelectedChange(opt.value)}
+        onMouseEnter={() => onOptionMouseEnter?.(opt)}
         key={opt.value}
       >{opt.name}</Button>
     )
@@ -90,8 +94,11 @@ export function DropdownOptions({ options, selected, onSelectedChange }: {
   </div>
 }
 
-export function CustomDropdown({ options, selected, onSelectedChange }: {
-  options: ButtonOption[], selected: string, onSelectedChange: Function
+export function CustomDropdown({ options, selected, onSelectedChange, onOptionMouseEnter }: {
+  options: ButtonOption[], 
+  selected: string, 
+  onSelectedChange: Function,
+  onOptionMouseEnter?: (option: ButtonOption) => void
 }) {
   let [showOptions, setShowOptions] = useState<boolean>(false);
   function toggleDropdownOptions() {
@@ -110,7 +117,8 @@ export function CustomDropdown({ options, selected, onSelectedChange }: {
 	)
 	return <div 
 	  className={optStyle}
-	  onClick={() => handleOptionClick(opt.value)}>
+	  onClick={() => handleOptionClick(opt.value)}
+	  onMouseEnter={() => onOptionMouseEnter?.(opt)}>
 	  {opt.name}
 	</div>
   })

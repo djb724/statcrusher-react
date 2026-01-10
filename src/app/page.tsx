@@ -2,7 +2,7 @@
 
 import styles from "./page.module.css";
 import * as types from './types';
-import { useUsageData } from './api';
+import { useUsageData, prefetchUsageData } from './api';
 import PokemonList from "./pokemon-list";
 import { useState, useEffect } from "react";
 import { InfoDisplay } from "./pokemon-info";
@@ -27,47 +27,50 @@ const bestOf: types.ButtonOption[] = [
 ]
 
 const formats: types.ButtonOption[] = [
-  { name: "Reg H", value: "gen9vgc2024regh" },
   { name: "Reg F", value: "gen9vgc2024regf" },
-  { name: "Reg I", value: "gen9vgc2025regi" },
   { name: "Reg G", value: "gen9vgc2024regg" },
+  { name: "Reg H", value: "gen9vgc2024regh" },
+  { name: "Reg I", value: "gen9vgc2025regi" },
 ]
 
-const formatMonths: {[format: string]: string[]} = {
+const formatMonths: { [format: string]: string[] } = {
   "gen9vgc2024regh": [
-	'2025-10',
-	'2025-09',
-	'2025-08',
-	'2024-12',
-	'2024-11',
-	'2024-10',
-	'2024-09',
-	'2024-08'
+    "2025-11",
+    "2025-10",
+    "2025-09",
+    "2025-08",
+    "2024-12",
+    "2024-11",
+    "2024-10",
+    "2024-09",
+    "2024-08"
   ],
   "gen9vgc2024regf": [
-	"2024-04",
-	"2024-03",
-	"2024-02",
-	"2024-01",
-	"2023-12",
+    "2025-12",
+    "2025-11",
+    "2024-04",
+    "2024-03",
+    "2024-02",
+    "2024-01",
+    "2023-12",
   ],
   "gen9vgc2025regi": [
-	'2025-07',
-	'2025-06',
-	'2025-05',
-	'2025-04',
+    '2025-07',
+    '2025-06',
+    '2025-05',
+    '2025-04',
   ],
   "gen9vgc2024regg": [
-	'2025-04',
-	'2025-03',
-	'2025-02',
-	'2025-01',
-	'2024-12',
-	'2024-08',
-	'2024-07',
-	'2024-06',
-	'2024-05',
-	'2024-04',
+    '2025-04',
+    '2025-03',
+    '2025-02',
+    '2025-01',
+    '2024-12',
+    '2024-08',
+    '2024-07',
+    '2024-06',
+    '2024-05',
+    '2024-04',
   ],
 }
 
@@ -80,55 +83,81 @@ const filterOptions: types.ButtonOption[] = [
 const defaultParams: types.PathParams = {
   elo: 0,
   bestOf: 'bo3',
-  format: 'gen9vgc2024regh',
-  month: '2025-10',
+  format: 'gen9vgc2024regf',
+  month: '2025-12',
 }
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
   {
     params: types.PathParams,
-	onParamsChange: (params: types.PathParams) => void,
+    onParamsChange: (params: types.PathParams) => void,
     restrictedFilter: types.RestrictedFilter,
-	onRestrictedFilterChange: (selected: string) => void,
+    onRestrictedFilterChange: (selected: string) => void,
     searchFilter: string,
-	onSearchFilterChange: (searchFilter: string) => void
+    onSearchFilterChange: (searchFilter: string) => void
   }
 ) {
   function handleFormatChange(format: string) {
-	const month = formatMonths[format][0];
-	onParamsChange({ ...params, format, month });
+    const month = formatMonths[format][0];
+    onParamsChange({ ...params, format, month });
+  }
+
+  function handleEloMouseEnter(option: types.ButtonOption) {
+    const newParams = { ...params, elo: option.value as number };
+    prefetchUsageData(newParams);
+  }
+
+  function handleBestOfMouseEnter(option: types.ButtonOption) {
+    const newParams = { ...params, bestOf: option.value as string };
+    prefetchUsageData(newParams);
+  }
+
+  function handleFormatMouseEnter(option: types.ButtonOption) {
+    const format = option.value as string;
+    const month = formatMonths[format]?.[0] || params.month;
+    const newParams = { ...params, format, month };
+    prefetchUsageData(newParams);
+  }
+
+  function handleMonthMouseEnter(option: types.ButtonOption) {
+    const newParams = { ...params, month: option.value as string };
+    prefetchUsageData(newParams);
   }
 
   let monthOptions: types.ButtonOption[] = [];
   if (formatMonths[params.format]) {
-	monthOptions = formatMonths[params.format].map(m => ({
-	  name: m,
-	  value: m
-	}));
+    monthOptions = formatMonths[params.format].map(m => ({
+      name: m,
+      value: m
+    }));
   }
   const showRestrictedFilter = (
-	params.format == "gen9vgc2024regg" ||
-	params.format == "gen9vgc2025regi"
+    params.format == "gen9vgc2024regg" ||
+    params.format == "gen9vgc2025regi"
   )
 
   return <div className={styles.panelContainer}>
     <SelectorButtonRow
       options={elos}
       selected={params.elo}
-      onSelectedChange={(elo: string | number) => onParamsChange({ ...params, elo: elo as number })} />
+      onSelectedChange={(elo: string | number) => onParamsChange({ ...params, elo: elo as number })}
+      onOptionMouseEnter={handleEloMouseEnter} />
     <div className={styles.flexRow}>
       <SelectorButtonRow
         options={bestOf}
         selected={params.bestOf}
-        onSelectedChange={(bestOf: string) => onParamsChange({ ...params, bestOf })} />
+        onSelectedChange={(bestOf: string) => onParamsChange({ ...params, bestOf })}
+        onOptionMouseEnter={handleBestOfMouseEnter} />
       <CustomDropdown
         options={formats}
         selected={params.format}
-        onSelectedChange={handleFormatChange} />
+        onSelectedChange={handleFormatChange}
+        onOptionMouseEnter={handleFormatMouseEnter} />
       <CustomDropdown
         options={monthOptions}
         selected={params.month}
-        onSelectedChange={(month: string) => onParamsChange({ ...params, month })} />
+        onSelectedChange={(month: string) => onParamsChange({ ...params, month })}
+        onOptionMouseEnter={handleMonthMouseEnter} />
     </div>
     {showRestrictedFilter && <SelectorButtonRow
       options={filterOptions}
@@ -177,7 +206,8 @@ function SidePanel({ params, onParamsChange, selectedPokemon, onSelectedPokemonC
         restrictedFilter={restrictedFilter}
         searchFilter={searchFilter}
         selectedPokemon={selectedPokemon}
-        onSelectedPokemonChange={onSelectedPokemonChange} />
+        onSelectedPokemonChange={onSelectedPokemonChange}
+        params={params} />
     </div>
   )
 }
@@ -309,6 +339,7 @@ export default function Home(): JSX.Element {
         </div>
         <div className={conc(styles.contentPanel, styles.scrollable)}>
           <InfoDisplay
+            key={selectedPokemon}
             params={params}
             selectedPokemon={selectedPokemon} />
         </div>

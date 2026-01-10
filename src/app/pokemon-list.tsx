@@ -1,19 +1,30 @@
-import {RestrictedFilter, UsageData, Status} from './types';
+import {RestrictedFilter, UsageData, Status, PathParams} from './types';
 import Image from 'next/image';
 import styles from './pokemon-list.module.css'
 import { percent, conc } from "./util";
 import { Loading } from './components';
+import { prefetchPokemonData } from './api';
 
-function PokemonListItem({ data, selected, onSelect }: {
-  data: UsageData, selected: boolean, onSelect: () => void
+function PokemonListItem({ data, selected, onSelect, params, onMouseEnter }: {
+  data: UsageData, 
+  selected: boolean, 
+  onSelect: () => void,
+  params: PathParams,
+  onMouseEnter?: () => void
 }): JSX.Element {
 
   let className = styles.pokemonListItem + ' ';
   className += selected ? styles.pokemonListItemSelected : '';
 
+  const handleMouseEnter = () => {
+    prefetchPokemonData(params, data.name);
+    onMouseEnter?.();
+  };
+
   return (<div  
       className={className}
-      onClick={onSelect}>
+      onClick={onSelect}
+      onMouseEnter={handleMouseEnter}>
     <div className={styles.rank}>{data.rank}</div>
     <Image 
       className={styles.menuSprite}
@@ -24,25 +35,35 @@ function PokemonListItem({ data, selected, onSelect }: {
   </div>)
 }
 
-function AggregateListItem({ selected, onSelect }: {
-  selected: boolean, onSelect: () => void
+function AggregateListItem({ selected, onSelect, params, onMouseEnter }: {
+  selected: boolean, 
+  onSelect: () => void,
+  params: PathParams,
+  onMouseEnter?: () => void
 }): JSX.Element {
+
+  const handleMouseEnter = () => {
+    prefetchPokemonData(params, 'Metagame');
+    onMouseEnter?.();
+  };
 
   return (<div
       className={conc(styles.aggregateListItem, selected ? 'selected' : '')}
-      onClick={onSelect}>
+      onClick={onSelect}
+      onMouseEnter={handleMouseEnter}>
     <div className={styles.pokemonName}>All Pokemon</div>
     <div className={styles.aggregateUsageRate}>100.00%</div>
   </div>)
 }
 
-export default function PokemonList({ data, status, restrictedFilter, searchFilter, selectedPokemon, onSelectedPokemonChange }: {
+export default function PokemonList({ data, status, restrictedFilter, searchFilter, selectedPokemon, onSelectedPokemonChange, params }: {
   data: UsageData[],
   status: Status,
   restrictedFilter: RestrictedFilter,
   searchFilter: string,
   selectedPokemon?: string,
-  onSelectedPokemonChange: Function
+  onSelectedPokemonChange: Function,
+  params: PathParams
 }) {
   if (status === Status.inProgress) return <Loading />
   if (status === Status.error) return <div>error</div>
@@ -58,10 +79,18 @@ export default function PokemonList({ data, status, restrictedFilter, searchFilt
   }
   let elementList = data.map(ud => {
     let s = selectedPokemon === ud.name;
-    return <PokemonListItem key={`li${ud.name}`} data={ud} selected={s} onSelect={() => onSelectedPokemonChange(ud.name)} />
+    return <PokemonListItem 
+      key={`li${ud.name}`} 
+      data={ud} 
+      selected={s} 
+      onSelect={() => onSelectedPokemonChange(ud.name)}
+      params={params} />
   });
   return <div>
-    <AggregateListItem selected={selectedPokemon==='Metagame'} onSelect={() => onSelectedPokemonChange('Metagame')} />
+    <AggregateListItem 
+      selected={selectedPokemon==='Metagame'} 
+      onSelect={() => onSelectedPokemonChange('Metagame')}
+      params={params} />
     {elementList}
   </div>
 }
