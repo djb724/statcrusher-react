@@ -75,7 +75,6 @@ export function useStats(params: PathParams, species: string): UseStatsResponse 
         }
       })
       .catch((err) => {
-        console.error(err);
         dataCache.set(params, species, {} as PokemonData, Status.error);
         setStatus(Status.error);
       })
