@@ -34,28 +34,8 @@ const formats: types.ButtonOption[] = [
 ]
 
 const formatMonths: { [format: string]: string[] } = {
-	"gen9vgc2024regh": [
-		"2025-11",
-		"2025-10",
-		"2025-09",
-		"2025-08",
-		"2024-12",
-		"2024-11",
-		"2024-10",
-		"2024-09",
-		"2024-08"
-	],
-	"gen9vgc2024regf": [
-		"2026-01",
-		"2025-12",
-		"2025-11",
-		"2024-04",
-		"2024-03",
-		"2024-02",
-		"2024-01",
-		"2023-12",
-	],
 	"gen9vgc2025regi": [
+		'2026-03',
 		'2025-07',
 		'2025-06',
 		'2025-05',
@@ -73,6 +53,29 @@ const formatMonths: { [format: string]: string[] } = {
 		'2024-05',
 		'2024-04',
 	],
+	"gen9vgc2024regf": [
+		"2026-03",
+		"2026-02",
+		"2026-01",
+		"2025-12",
+		"2025-11",
+		"2024-04",
+		"2024-03",
+		"2024-02",
+		"2024-01",
+		"2023-12",
+	],
+	"gen9vgc2024regh": [
+		"2025-11",
+		"2025-10",
+		"2025-09",
+		"2025-08",
+		"2024-12",
+		"2024-11",
+		"2024-10",
+		"2024-09",
+		"2024-08"
+	],
 }
 
 const filterOptions: types.ButtonOption[] = [
@@ -84,8 +87,8 @@ const filterOptions: types.ButtonOption[] = [
 const defaultParams: types.PathParams = {
 	elo: 0,
 	bestOf: 'bo3',
-	format: 'gen9vgc2024regf',
-	month: '2026-01',
+	format: 'gen9vgc2025regi',
+	month: '2026-03',
 }
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
