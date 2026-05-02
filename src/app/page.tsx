@@ -35,6 +35,7 @@ const formats: types.ButtonOption[] = [
 
 const formatMonths: { [format: string]: string[] } = {
 	"gen9vgc2025regi": [
+		'2026-04',
 		'2026-03',
 		'2025-07',
 		'2025-06',
@@ -88,7 +89,7 @@ const defaultParams: types.PathParams = {
 	elo: 0,
 	bestOf: 'bo3',
 	format: 'gen9vgc2025regi',
-	month: '2026-03',
+	month: '2026-04',
 }
 
 function SelectorPanel({ params, onParamsChange, restrictedFilter, onRestrictedFilterChange, searchFilter, onSearchFilterChange }:
