@@ -183,7 +183,7 @@ function InfoHeader({ pokemonData }: { pokemonData: PokemonData }) {
     <div className={styles.headerImageContainer}>
       <div className={styles.headerImage}>
         <Image
-          src={`/official-art/${imageName}.png`}
+          src={`http://cdn.statcrusher.com/official-art/${imageName}.png`}
           alt={''}
           width={175}
           height={175}

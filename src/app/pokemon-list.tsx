@@ -28,7 +28,7 @@ function PokemonListItem({ data, selected, onSelect, params, onMouseEnter }: {
     <div className={styles.rank}>{data.rank}</div>
     <Image 
       className={styles.menuSprite}
-      src={`/menu-sprites/${data.name}.png`} 
+      src={`http://cdn.statcrusher.com/menu-sprites/${data.name}.png`} 
       alt='' width={64} height={64} />
     <div className={styles.pokemonName}>{data.name}</div>
     <div className={styles.usageRate}>{percent(data.usageRate)}</div>
@@ -59,7 +59,7 @@ function AggregateListItem({ selected, onSelect, params, onMouseEnter }: {
 export default function PokemonList({ data, status, restrictedFilter, searchFilter, selectedPokemon, onSelectedPokemonChange, params }: {
   data: UsageData[],
   status: Status,
-  restrictedFilter: RestrictedFilter,
+  restrictedFilter: RestrictedFilter
   searchFilter: string,
   selectedPokemon?: string,
   onSelectedPokemonChange: Function,
