@@ -1,5 +1,5 @@
 # Use an official Node image for building the app
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 # Set working directory
 WORKDIR /app
@@ -18,7 +18,7 @@ RUN npm run build
 
 # ---------------------------------------------------------
 # Production image — only includes necessary runtime files
-FROM node:18-alpine AS runner
+FROM node:22-alpine AS runner
 
 # Set NODE_ENV to production
 ENV NODE_ENV=production

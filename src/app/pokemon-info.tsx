@@ -178,12 +178,12 @@ function Histogram({ datasetType, data, min, max }: {
 
 function InfoHeader({ pokemonData }: { pokemonData: PokemonData }) {
 
-  let imageName = `${pokemonData.dexNum.toString().padStart(4, '0')} ${pokemonData.name}`
+  let imageName = `${pokemonData.name}`
   return <div className={conc(styles.boxSection, styles.header)}>
     <div className={styles.headerImageContainer}>
       <div className={styles.headerImage}>
         <Image
-          src={`http://cdn.statcrusher.com/official-art/${imageName}.png`}
+          src={`https://cdn.statcrusher.com/official-art/${imageName}.png`}
           alt={''}
           width={175}
           height={175}
